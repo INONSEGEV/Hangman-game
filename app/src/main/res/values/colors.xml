@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Primary colors -->
+    <color name="colorPrimary">#6200EA</color>
+    <color name="colorPrimaryVariant">#3700B3</color>
+    <color name="colorOnPrimary">#FFFFFF</color>
+
+    <!-- Secondary colors -->
+    <color name="colorSecondary">#03DAC6</color>
+    <color name="colorSecondaryVariant">#018786</color>
+    <color name="colorOnSecondary">#000000</color>
+
+    <!-- Accent colors -->
+    <color name="colorAccent">#FF5722</color>
+    <color name="colorError">#B00020</color>
+
+    <!-- Background colors -->
+    <color name="colorBackground">#FFFFFF</color>
+    <color name="colorSurface">#FFFFFF</color>
+    <color name="colorOnBackground">#000000</color>
+    <color name="colorOnSurface">#000000</color>
+
+    <!-- Text colors -->
+    <color name="text_primary">#212121</color>
+    <color name="text_secondary">#757575</color>
+    <color name="text_hint">#BDBDBD</color>
+
+    <!-- Game specific colors -->
+    <color name="game_over_red">#F44336</color>
+    <color name="game_win_green">#4CAF50</color>
+    <color name="word_background">#F5F5F5</color>
+
+    <!-- Basic colors -->
+    <color name="white">#FFFFFF</color>
+    <color name="black">#000000</color>
+    <color name="transparent">#00000000</color>
+
+    <!-- Gradient colors -->
+    <color name="gradient_start">#667eea</color>
+    <color name="gradient_end">#764ba2</color>
+
+    <!-- Victory colors -->
+    <color name="victory_gold">#FFD700</color>
+    <color name="victory_gradient_start">#56ab2f</color>
+    <color name="victory_gradient_end">#a8e6cf</color>
+    <color name="celebration_yellow">#FFC107</color>
+    <color name="celebration_orange">#FF9800</color>
+
+    <!-- Game colors -->
+    <color name="keyboard_background">#F8F9FA</color>
+    <color name="letter_button_normal">#FFFFFF</color>
+    <color name="letter_button_pressed">#E3F2FD</color>
+    <color name="letter_button_disabled">#BDBDBD</color>
+    <color name="letter_slot_empty">#F5F5F5</color>
+    <color name="letter_slot_filled">#E8F5E8</color>
+    <color name="delete_button">#FF5722</color>
+</resources>
