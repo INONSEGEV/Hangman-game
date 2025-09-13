@@ -1,6 +1,7 @@
 package com.example.hangmangame;
 
 import android.content.Intent;
+import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.widget.Button;
@@ -23,6 +24,7 @@ public class GameOverActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_game_over);
+        setVolumeControlStream(AudioManager.STREAM_MUSIC);
         mediaPlayer = MediaPlayer.create(this, R.raw.go);
         mediaPlayer.start();
         correctWordTEXT = findViewById(R.id.correctWord);

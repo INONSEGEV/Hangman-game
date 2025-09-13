@@ -1,6 +1,7 @@
 package com.example.hangmangame;
 
 import android.content.Intent;
+import android.media.AudioManager;
 import android.os.Bundle;
 import android.widget.Button;
 
@@ -24,6 +25,7 @@ public class MainActivity extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+        setVolumeControlStream(AudioManager.STREAM_MUSIC);
 
         StartGame = findViewById(R.id.StartGame);
 

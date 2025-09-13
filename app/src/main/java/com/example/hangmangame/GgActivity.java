@@ -3,6 +3,7 @@ package com.example.hangmangame;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
@@ -29,6 +30,7 @@ public class GgActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_gg);
+        setVolumeControlStream(AudioManager.STREAM_MUSIC);
         hideSystemUI();
         mediaPlayer = MediaPlayer.create(this, R.raw.gg);
         mediaPlayer.start();

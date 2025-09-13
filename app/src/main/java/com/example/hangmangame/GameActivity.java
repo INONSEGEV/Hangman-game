@@ -1,6 +1,8 @@
 package com.example.hangmangame;
 
 import android.content.Intent;
+import android.media.AudioAttributes;
+import android.media.AudioManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -17,11 +19,13 @@ public class GameActivity extends AppCompatActivity {
             btn_ח, btn_ט, btn_י, btn_כ, btn_ל, btn_מ, btn_נ,
             btn_ס, btn_ע, btn_פ, btn_צ, btn_ק, btn_ר, btn_ש,
             btn_ת, btn_ך, btn_ם, btn_ן, btn_ף, btn_ץ;
+    Button[] buttons;
 
     TextView tv1, tv2, tv3, tv4, tv5, tv6, tv7, tv8, tv9, livesCount, scoreCount;
 
-    int wrongCount = 0, score = 0; // ספירת טעויות ונקודות
+    int wrongCount = 0, score = 0;
 
+    String[] words;
     String selectedWord;
     TextView[] textViews;
     HangmanStepDrawView hangmanView;
@@ -30,9 +34,13 @@ public class GameActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game);
+        setVolumeControlStream(AudioManager.STREAM_MUSIC);
+
         hideSystemUI();
+
+
         // מאגר מילים
-        String[] words = {
+        words =new String[] {
                 "מחשב", "תפוח", "ספר", "תכנות", "גיטרה", "חלון", "שולחן",
                 "תמונה", "עכבר", "טלפון", "מקלדת", "ספריה", "כדור", "מכונית",
                 "סוס", "בית", "דג", "תפוז", "חולצה", "שעון"
@@ -94,12 +102,13 @@ public class GameActivity extends AppCompatActivity {
         btn_ף = findViewById(R.id.btn_ף);
         btn_ץ = findViewById(R.id.btn_ץ);
 
-        Button[] buttons = {
+        buttons = new Button[]{
                 btn_א, btn_ב, btn_ג, btn_ד, btn_ה, btn_ו, btn_ז,
                 btn_ח, btn_ט, btn_י, btn_כ, btn_ל, btn_מ, btn_נ,
                 btn_ס, btn_ע, btn_פ, btn_צ, btn_ק, btn_ר, btn_ש,
                 btn_ת, btn_ך, btn_ם, btn_ן, btn_ף, btn_ץ
         };
+
 
         // Hangman אנימציה
         hangmanView = findViewById(R.id.hangmanView);
@@ -130,6 +139,9 @@ public class GameActivity extends AppCompatActivity {
                 hangmanView.drawNextStep(); // מצייר את השלב הבא
 
                 if (wrongCount >= hangmanView.getMaxSteps()) {
+                    for (Button btn : buttons) {
+                        btn.setEnabled(false);
+                    }
                     showGameOver();
                 }
             }
