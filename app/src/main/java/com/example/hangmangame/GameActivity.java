@@ -1,17 +1,25 @@
 package com.example.hangmangame;
 
 import android.content.Intent;
-import android.media.AudioAttributes;
+import android.graphics.Typeface;
 import android.media.AudioManager;
 import android.os.Bundle;
 import android.util.Log;
+import android.util.TypedValue;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
+
+import com.google.android.flexbox.FlexboxLayout;
 
 import java.util.Random;
+import java.util.ArrayList;
+import java.util.Arrays;
 
 public class GameActivity extends AppCompatActivity {
 
@@ -21,14 +29,16 @@ public class GameActivity extends AppCompatActivity {
             btn_ת, btn_ך, btn_ם, btn_ן, btn_ף, btn_ץ;
     Button[] buttons;
 
-    TextView tv1, tv2, tv3, tv4, tv5, tv6, tv7, tv8, tv9, livesCount, scoreCount;
+    TextView livesCount, scoreCount;
 
-    int wrongCount = 0, score = 0;
+    int wrongCount = 0, score = 0,wrongCountAll=0,scoreAll=0;
+    int wordIndex = 0;
 
-    String[] words;
+    ArrayList<String> words;
     String selectedWord;
     TextView[] textViews;
     HangmanStepDrawView hangmanView;
+    FlexboxLayout lettersContainer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,42 +48,24 @@ public class GameActivity extends AppCompatActivity {
 
         hideSystemUI();
 
-
         // מאגר מילים
-        words =new String[] {
-                "מחשב", "תפוח", "ספר", "תכנות", "גיטרה", "חלון", "שולחן",
-                "תמונה", "עכבר", "טלפון", "מקלדת", "ספריה", "כדור", "מכונית",
-                "סוס", "בית", "דג", "תפוז", "חולצה", "שעון"
-        };
+        words = new ArrayList<>(Arrays.asList(
+                "מחשב", "תפוח"
+        ));
 
-        // בחירת מילה אקראית
-        Random random = new Random();
-        selectedWord = words[random.nextInt(words.length)];
-        Log.d("DEBUG", "Selected Word: " + selectedWord);
-
-        // TextViews להצגת המילה
-        tv1 = findViewById(R.id.tv1);
-        tv2 = findViewById(R.id.tv2);
-        tv3 = findViewById(R.id.tv3);
-        tv4 = findViewById(R.id.tv4);
-        tv5 = findViewById(R.id.tv5);
-        tv6 = findViewById(R.id.tv6);
-        tv7 = findViewById(R.id.tv7);
-        tv8 = findViewById(R.id.tv8);
-        tv9 = findViewById(R.id.tv9);
+        // מצביעים ל־UI
         livesCount = findViewById(R.id.livesCount);
         scoreCount = findViewById(R.id.scoreCount);
-
-        scoreCount.setText(0 + "/" + selectedWord.length());
-
-        textViews = new TextView[]{tv1, tv2, tv3, tv4, tv5, tv6, tv7, tv8, tv9};
-
-        // הצגת קווים ראשוניים
-        for (int i = 0; i < selectedWord.length(); i++) {
-            textViews[i].setText("_");
-        }
+        lettersContainer = findViewById(R.id.lettersContainer);
+        hangmanView = findViewById(R.id.hangmanView);
 
         // כפתורים
+        initButtons();
+
+        startNextWord();
+    }
+
+    private void initButtons() {
         btn_א = findViewById(R.id.btn_א);
         btn_ב = findViewById(R.id.btn_ב);
         btn_ג = findViewById(R.id.btn_ג);
@@ -109,11 +101,6 @@ public class GameActivity extends AppCompatActivity {
                 btn_ת, btn_ך, btn_ם, btn_ן, btn_ף, btn_ץ
         };
 
-
-        // Hangman אנימציה
-        hangmanView = findViewById(R.id.hangmanView);
-
-        // Listener לכל הכפתורים
         View.OnClickListener letterClickListener = v -> {
             Button b = (Button) v;
             String letter = b.getText().toString();
@@ -132,24 +119,97 @@ public class GameActivity extends AppCompatActivity {
             scoreCount.setText(score + "/" + selectedWord.length());
 
             if (updated) {
-                checkWin(); // בדיקה אם ניצחת
+                checkWin();
             } else {
-                wrongCount++; // טעות נוספת
+                wrongCount++;
                 livesCount.setText(String.valueOf(hangmanView.getMaxSteps() - wrongCount));
-                hangmanView.drawNextStep(); // מצייר את השלב הבא
+                hangmanView.drawNextStep();
 
                 if (wrongCount >= hangmanView.getMaxSteps()) {
-                    for (Button btn : buttons) {
-                        btn.setEnabled(false);
-                    }
+                    for (Button btn : buttons) btn.setEnabled(false);
                     showGameOver();
                 }
             }
         };
 
-        for (Button b : buttons) {
-            b.setOnClickListener(letterClickListener);
+        for (Button b : buttons) b.setOnClickListener(letterClickListener);
+    }
+
+    private void startNextWord() {
+        if (words.isEmpty()) {
+            Toast.makeText(this, "סיימת את כל המילים!", Toast.LENGTH_SHORT).show();
+            if (scoreAll>wrongCountAll) {
+                Intent intent = new Intent(this, GgActivity.class);
+                intent.putExtra("ScoreCount", scoreAll);
+                startActivity(intent);
+            }
+            else
+            {
+                Intent intent =new Intent(this,GgActivity.class);
+                intent.putExtra("wrongCount",wrongCountAll);
+                startActivity(intent);
+            }
+            finish();
         }
+
+        // איפוס ערכים
+        wrongCount = 0;
+        score = 0;
+        hangmanView.reset();
+
+        // איפוס הכפתורים
+        for (Button b : buttons) {
+            b.setEnabled(true);
+            b.setVisibility(View.VISIBLE);
+        }
+
+        // בוחרים מילה חדשה
+        Random random = new Random();
+        int a = random.nextInt(words.size());
+        selectedWord = words.get(a);
+        words.remove(a);
+        Log.d("DEBUG",selectedWord);
+
+        // נקה TextViews ישנים
+        lettersContainer.removeAllViews();
+        textViews = new TextView[selectedWord.length()];
+
+        // הוסף TextViews חדשים
+        for (int i = 0; i < selectedWord.length(); i++) {
+            TextView tv = createLetterView("_");
+            lettersContainer.addView(tv);
+            textViews[i] = tv;
+        }
+
+        // עדכון ה־score/lives
+        scoreCount.setText(score + "/" + selectedWord.length());
+        livesCount.setText(String.valueOf(hangmanView.getMaxSteps()));
+    }
+
+    // יצירת TextView עם סטייל
+    private TextView createLetterView(String text) {
+        TextView tv = new TextView(this);
+
+        FlexboxLayout.LayoutParams params = new FlexboxLayout.LayoutParams(
+                FlexboxLayout.LayoutParams.WRAP_CONTENT,
+                (int) TypedValue.applyDimension(
+                        TypedValue.COMPLEX_UNIT_DIP, 50, getResources().getDisplayMetrics()
+                )
+        );
+
+        int margin = (int) TypedValue.applyDimension(
+                TypedValue.COMPLEX_UNIT_DIP, 2, getResources().getDisplayMetrics()
+        );
+        params.setMargins(margin, margin, margin, margin);
+        tv.setLayoutParams(params);
+
+        tv.setGravity(Gravity.CENTER);
+        tv.setTextSize(TypedValue.COMPLEX_UNIT_SP, 28);
+        tv.setTypeface(null, Typeface.BOLD);
+        tv.setTextColor(ContextCompat.getColor(this, R.color.text_primary));
+        tv.setText(text);
+
+        return tv;
     }
 
     // בדיקה אם כל האותיות נחשפו
@@ -163,23 +223,18 @@ public class GameActivity extends AppCompatActivity {
         }
 
         if (won) {
-            Intent intent = new Intent(this, GgActivity.class);
-            intent.putExtra("theWord", selectedWord);
-            intent.putExtra("wrongCount", wrongCount);
-            startActivity(intent);
-            finish();
+            Toast.makeText(this, "נחשפת המילה: " + selectedWord, Toast.LENGTH_SHORT).show();
+            score++;
+            startNextWord();
         }
     }
 
     private void showGameOver() {
-        new android.os.Handler().postDelayed(() -> {
-            Intent intent = new Intent(this, GameOverActivity.class);
-            intent.putExtra("theWord", selectedWord);
-            startActivity(intent);
-            finish();
-        }, 1500); // 2000 מילישניות = 2 שניות
-
+        Toast.makeText(this, "המילה הייתה: " + selectedWord, Toast.LENGTH_SHORT).show();
+        wrongCountAll++;
+        startNextWord();
     }
+
     private void hideSystemUI() {
         View decorView = getWindow().getDecorView();
         decorView.setSystemUiVisibility(

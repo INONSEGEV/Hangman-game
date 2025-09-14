@@ -128,45 +128,17 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent">
 
-        <LinearLayout
-            android:id="@+id/lettersRow"
+
+        <com.google.android.flexbox.FlexboxLayout
+            android:id="@+id/lettersContainer"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="center"
-            android:weightSum="9"
-            android:padding="20dp">
+            app:flexWrap="wrap"
+            app:justifyContent="center"
+            app:alignItems="center"/>
 
-            <!-- 9 TextViews בדיוק כמו המקור -->
-            <TextView android:id="@+id/tv1" android:layout_width="0dp" android:layout_height="50dp"
-                android:layout_weight="1" android:gravity="center" android:text="" android:textSize="28sp"
-                android:textStyle="bold" android:textColor="@color/text_primary" android:layout_margin="2dp"/>
-            <TextView android:id="@+id/tv2" android:layout_width="0dp" android:layout_height="50dp"
-                android:layout_weight="1" android:gravity="center" android:text="" android:textSize="28sp"
-                android:textStyle="bold" android:textColor="@color/text_primary" android:layout_margin="2dp"/>
-            <TextView android:id="@+id/tv3" android:layout_width="0dp" android:layout_height="50dp"
-                android:layout_weight="1" android:gravity="center" android:text="" android:textSize="28sp"
-                android:textStyle="bold" android:textColor="@color/text_primary" android:layout_margin="2dp"/>
-            <TextView android:id="@+id/tv4" android:layout_width="0dp" android:layout_height="50dp"
-                android:layout_weight="1" android:gravity="center" android:text="" android:textSize="28sp"
-                android:textStyle="bold" android:textColor="@color/text_primary" android:layout_margin="2dp"/>
-            <TextView android:id="@+id/tv5" android:layout_width="0dp" android:layout_height="50dp"
-                android:layout_weight="1" android:gravity="center" android:text="" android:textSize="28sp"
-                android:textStyle="bold" android:textColor="@color/text_primary" android:layout_margin="2dp"/>
-            <TextView android:id="@+id/tv6" android:layout_width="0dp" android:layout_height="50dp"
-                android:layout_weight="1" android:gravity="center" android:text="" android:textSize="28sp"
-                android:textStyle="bold" android:textColor="@color/text_primary" android:layout_margin="2dp"/>
-            <TextView android:id="@+id/tv7" android:layout_width="0dp" android:layout_height="50dp"
-                android:layout_weight="1" android:gravity="center" android:text="" android:textSize="28sp"
-                android:textStyle="bold" android:textColor="@color/text_primary" android:layout_margin="2dp"/>
-            <TextView android:id="@+id/tv8" android:layout_width="0dp" android:layout_height="50dp"
-                android:layout_weight="1" android:gravity="center" android:text="" android:textSize="28sp"
-                android:textStyle="bold" android:textColor="@color/text_primary" android:layout_margin="2dp"/>
-            <TextView android:id="@+id/tv9" android:layout_width="0dp" android:layout_height="50dp"
-                android:layout_weight="1" android:gravity="center" android:text="" android:textSize="28sp"
-                android:textStyle="bold" android:textColor="@color/text_primary" android:layout_margin="2dp"/>
 
-        </LinearLayout>
+
 
     </androidx.cardview.widget.CardView>
 

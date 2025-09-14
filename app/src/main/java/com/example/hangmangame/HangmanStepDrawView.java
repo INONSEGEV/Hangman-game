@@ -188,6 +188,13 @@ public class HangmanStepDrawView extends View {
             }
         });
     }
+    public void reset() {
+        currentStep = 0;
+        animatedValue = 0f;
+        drawPath.reset();
+        invalidate(); // גורם ל-onDraw להתעדכן ולהציג ציור ריק
+    }
+
 
     public int getMaxSteps() {
         return steps.size();

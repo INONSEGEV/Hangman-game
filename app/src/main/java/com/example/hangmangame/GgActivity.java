@@ -42,7 +42,7 @@ public class GgActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         correctWord.setText(intent.getStringExtra("theWord"));
-        attemptsCount.setText(String.valueOf(intent.getIntExtra("wrongCount",0)));
+        attemptsCount.setText(String.valueOf(intent.getIntExtra("ScoreCount",0)));
 
         playAgainButton.setOnClickListener(v -> {
             Intent intent1 = new Intent(this, GameActivity.class);
