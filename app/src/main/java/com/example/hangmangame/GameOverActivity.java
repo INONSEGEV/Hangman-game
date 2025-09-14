@@ -15,7 +15,7 @@ import androidx.core.view.WindowInsetsCompat;
 
 public class GameOverActivity extends AppCompatActivity {
 
-    TextView correctWordTEXT;
+    TextView correctWordTEXT,attemptsCount;
     Button playAgain;
     MediaPlayer mediaPlayer;
 
@@ -29,8 +29,11 @@ public class GameOverActivity extends AppCompatActivity {
         mediaPlayer.start();
         correctWordTEXT = findViewById(R.id.correctWord);
         playAgain = findViewById(R.id.playAgainButton);
+        attemptsCount=findViewById(R.id.attemptsCount);
         Intent intent = getIntent();
         correctWordTEXT.setText(intent.getStringExtra("theWord"));
+        attemptsCount.setText(String.valueOf(intent.getIntExtra("wrongCount",0)));
+
 
         playAgain.setOnClickListener(v -> {
             Intent intent1 = new Intent(this, GameActivity.class);

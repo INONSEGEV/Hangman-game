@@ -145,7 +145,7 @@ public class GameActivity extends AppCompatActivity {
             }
             else
             {
-                Intent intent =new Intent(this,GgActivity.class);
+                Intent intent =new Intent(this, GameOverActivity.class);
                 intent.putExtra("wrongCount",wrongCountAll);
                 startActivity(intent);
             }
@@ -156,7 +156,6 @@ public class GameActivity extends AppCompatActivity {
         wrongCount = 0;
         score = 0;
         hangmanView.reset();
-
         // איפוס הכפתורים
         for (Button b : buttons) {
             b.setEnabled(true);
@@ -183,7 +182,7 @@ public class GameActivity extends AppCompatActivity {
 
         // עדכון ה־score/lives
         scoreCount.setText(score + "/" + selectedWord.length());
-        livesCount.setText(String.valueOf(hangmanView.getMaxSteps()));
+        livesCount.setText(String.valueOf(10));
     }
 
     // יצירת TextView עם סטייל
@@ -224,7 +223,7 @@ public class GameActivity extends AppCompatActivity {
 
         if (won) {
             Toast.makeText(this, "נחשפת המילה: " + selectedWord, Toast.LENGTH_SHORT).show();
-            score++;
+            scoreAll++;
             startNextWord();
         }
     }

@@ -38,7 +38,7 @@ public class GgActivity extends AppCompatActivity {
         correctWord = findViewById(R.id.correctWord);
         attemptsCount = findViewById(R.id.attemptsCount);
         playAgainButton = findViewById(R.id.playAgainButton);
-        shareButton = findViewById(R.id.shareButton); // כפתור השיתוף
+        shareButton = findViewById(R.id.shareButton);
 
         Intent intent = getIntent();
         correctWord.setText(intent.getStringExtra("theWord"));
