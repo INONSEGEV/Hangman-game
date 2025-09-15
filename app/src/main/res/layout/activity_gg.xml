@@ -1,13 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/victory_gradient_background"
-    tools:context=".VictoryActivity">
+    android:fillViewport="true">  <!-- שומר שהתוכן יתפרס על כל המסך גם אם אין הרבה -->
 
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/main"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/victory_gradient_background"
+        tools:context=".GgActivity">
     <!-- Background overlay for better text visibility -->
     <View
         android:id="@+id/overlay"
@@ -102,10 +106,10 @@
 
             <!-- The Word Was -->
             <TextView
-                android:id="@+id/wordLabel"
+                android:id="@+id/trueWordLabel"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="המילה הייתה:"
+                android:text="המילים שצדקת בניחושן:"
                 android:textSize="18sp"
                 android:textColor="@color/text_secondary"
                 android:gravity="center"
@@ -114,7 +118,7 @@
 
             <!-- Victory stats -->
             <TextView
-                android:id="@+id/correctWord"
+                android:id="@+id/trueCorrectWord"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="24dp"
@@ -122,6 +126,31 @@
                 android:gravity="center"
                 android:padding="20dp"
                 android:text="X"
+                android:textColor="@color/victory_gold"
+                android:textSize="36sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/falseWordLabel"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="המילים שטעית בניחושן:"
+                android:textSize="18sp"
+                android:textColor="@color/text_secondary"
+                android:gravity="center"
+                android:layout_marginBottom="8dp" />
+
+
+            <!-- Victory stats -->
+            <TextView
+                android:id="@+id/falseCorrectWord"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="24dp"
+                android:background="@drawable/victory_word_background"
+                android:gravity="center"
+                android:padding="20dp"
+                android:text="אין מילים שטעית בניחושן👌"
                 android:textColor="@color/victory_gold"
                 android:textSize="36sp"
                 android:textStyle="bold" />
@@ -144,7 +173,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="פתרת ב-"
+                        android:text="פתרת "
                         android:textSize="16sp"
                         android:textColor="@color/text_secondary"
                          />
@@ -163,7 +192,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="ניסיונות!"
+                        android:text="מילים"
                         android:textSize="16sp"
                         android:textColor="@color/text_secondary"
                          />
@@ -246,17 +275,7 @@
             android:layout_marginBottom="16dp"
             app:rippleColor="@color/victory_gold" />
 
-        <!-- Continue/Challenge Button -->
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/challengeButton"
-            android:layout_width="match_parent"
-            android:layout_height="48dp"
-            android:text="אתגר נוסף 🎯"
-            android:textSize="16sp"
-            style="@style/Widget.Material3.Button.TextButton"
-            android:textColor="@color/white"
-            android:layout_marginBottom="8dp"
-            app:rippleColor="@color/white" />
+
 
         <!-- Main Menu Button -->
         <com.google.android.material.button.MaterialButton
@@ -271,4 +290,5 @@
 
     </LinearLayout>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>

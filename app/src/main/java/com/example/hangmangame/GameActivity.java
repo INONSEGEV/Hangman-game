@@ -34,7 +34,7 @@ public class GameActivity extends AppCompatActivity {
     int wrongCount = 0, score = 0,wrongCountAll=0,scoreAll=0;
     int wordIndex = 0;
 
-    ArrayList<String> words;
+    ArrayList<String> words,yesWords,noWords;
     String selectedWord;
     TextView[] textViews;
     HangmanStepDrawView hangmanView;
@@ -52,6 +52,8 @@ public class GameActivity extends AppCompatActivity {
         words = new ArrayList<>(Arrays.asList(
                 "מחשב", "תפוח"
         ));
+        yesWords=new ArrayList<>();
+        noWords=new ArrayList<>();
 
         // מצביעים ל־UI
         livesCount = findViewById(R.id.livesCount);
@@ -141,12 +143,16 @@ public class GameActivity extends AppCompatActivity {
             if (scoreAll>wrongCountAll) {
                 Intent intent = new Intent(this, GgActivity.class);
                 intent.putExtra("ScoreCount", scoreAll);
+                intent.putExtra("noWords",noWords);
+                intent.putExtra("yesWords",yesWords);
                 startActivity(intent);
             }
             else
             {
                 Intent intent =new Intent(this, GameOverActivity.class);
                 intent.putExtra("wrongCount",wrongCountAll);
+                intent.putExtra("noWords",noWords);
+                intent.putExtra("yesWords",yesWords);
                 startActivity(intent);
             }
             finish();
@@ -224,6 +230,7 @@ public class GameActivity extends AppCompatActivity {
         if (won) {
             Toast.makeText(this, "נחשפת המילה: " + selectedWord, Toast.LENGTH_SHORT).show();
             scoreAll++;
+            yesWords.add(selectedWord);
             startNextWord();
         }
     }
@@ -231,6 +238,7 @@ public class GameActivity extends AppCompatActivity {
     private void showGameOver() {
         Toast.makeText(this, "המילה הייתה: " + selectedWord, Toast.LENGTH_SHORT).show();
         wrongCountAll++;
+        noWords.add(selectedWord);
         startNextWord();
     }
 

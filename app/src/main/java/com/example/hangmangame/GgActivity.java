@@ -18,10 +18,12 @@ import androidx.core.content.FileProvider;
 
 import java.io.File;
 import java.io.FileOutputStream;
+import java.util.ArrayList;
 
 public class GgActivity extends AppCompatActivity {
 
-    TextView correctWord, attemptsCount;
+    TextView trueCorrectWord,falseCorrectWord, attemptsCount;
+
     Button playAgainButton, shareButton;
     MediaPlayer mediaPlayer;
 
@@ -34,14 +36,23 @@ public class GgActivity extends AppCompatActivity {
         hideSystemUI();
         mediaPlayer = MediaPlayer.create(this, R.raw.gg);
         mediaPlayer.start();
-
-        correctWord = findViewById(R.id.correctWord);
+        falseCorrectWord=findViewById(R.id.falseCorrectWord);
+        trueCorrectWord = findViewById(R.id.trueCorrectWord);
         attemptsCount = findViewById(R.id.attemptsCount);
         playAgainButton = findViewById(R.id.playAgainButton);
         shareButton = findViewById(R.id.shareButton);
 
         Intent intent = getIntent();
-        correctWord.setText(intent.getStringExtra("theWord"));
+        ArrayList<String> trueWords = intent.getStringArrayListExtra("yesWords");
+        if (trueWords != null) {
+            trueCorrectWord.setText(String.join(", ", trueWords)); // מציג מופרד בפסיקים
+        }
+
+        ArrayList<String> falseWords = intent.getStringArrayListExtra("yesWords");
+        if (falseWords != null) {
+            trueCorrectWord.setText(String.join(", ", falseWords)); // מציג מופרד בפסיקים
+        }
+
         attemptsCount.setText(String.valueOf(intent.getIntExtra("ScoreCount",0)));
 
         playAgainButton.setOnClickListener(v -> {

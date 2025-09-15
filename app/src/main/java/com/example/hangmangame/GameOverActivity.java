@@ -13,9 +13,11 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import java.util.ArrayList;
+
 public class GameOverActivity extends AppCompatActivity {
 
-    TextView correctWordTEXT,attemptsCount;
+    TextView trueCorrectWord,falseCorrectWord, attemptsCount;
     Button playAgain;
     MediaPlayer mediaPlayer;
 
@@ -27,12 +29,21 @@ public class GameOverActivity extends AppCompatActivity {
         setVolumeControlStream(AudioManager.STREAM_MUSIC);
         mediaPlayer = MediaPlayer.create(this, R.raw.go);
         mediaPlayer.start();
-        correctWordTEXT = findViewById(R.id.correctWord);
+        trueCorrectWord = findViewById(R.id.trueCorrectWord);
+        falseCorrectWord=findViewById(R.id.falseCorrectWord);
         playAgain = findViewById(R.id.playAgainButton);
         attemptsCount=findViewById(R.id.attemptsCount);
         Intent intent = getIntent();
-        correctWordTEXT.setText(intent.getStringExtra("theWord"));
+        ArrayList<String> trueWords = intent.getStringArrayListExtra("yesWords");
+        if (trueWords != null) {
+            trueCorrectWord.setText(String.join(", ", trueWords)); // מציג מופרד בפסיקים
+        }
+        ArrayList<String> falseWords = intent.getStringArrayListExtra("noWords");
+        if (falseWords != null) {
+            falseCorrectWord.setText(String.join(", ", falseWords)); // מציג מופרד בפסיקים
+        }
         attemptsCount.setText(String.valueOf(intent.getIntExtra("wrongCount",0)));
+
 
 
         playAgain.setOnClickListener(v -> {
