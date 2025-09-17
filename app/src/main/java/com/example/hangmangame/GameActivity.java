@@ -1,6 +1,7 @@
 package com.example.hangmangame;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Typeface;
 import android.media.AudioManager;
 import android.os.Bundle;
@@ -17,6 +18,9 @@ import androidx.core.content.ContextCompat;
 
 import com.google.android.flexbox.FlexboxLayout;
 
+import org.json.JSONArray;
+
+import java.util.List;
 import java.util.Random;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -26,14 +30,13 @@ public class GameActivity extends AppCompatActivity {
     Button btn_א, btn_ב, btn_ג, btn_ד, btn_ה, btn_ו, btn_ז,
             btn_ח, btn_ט, btn_י, btn_כ, btn_ל, btn_מ, btn_נ,
             btn_ס, btn_ע, btn_פ, btn_צ, btn_ק, btn_ר, btn_ש,
-            btn_ת, btn_ך, btn_ם, btn_ן, btn_ף, btn_ץ;
+            btn_ת, btn_ך, btn_ם, btn_ן, btn_ף, btn_ץ,btn_Add;
     Button[] buttons;
-
+    private static final String PREFS_NAME = "hangman_prefs";
+    private static final String KEY_WORDS = "words_list";
     TextView livesCount, scoreCount;
 
     int wrongCount = 0, score = 0,wrongCountAll=0,scoreAll=0;
-    int wordIndex = 0;
-
     ArrayList<String> words,yesWords,noWords;
     String selectedWord;
     TextView[] textViews;
@@ -49,7 +52,9 @@ public class GameActivity extends AppCompatActivity {
         hideSystemUI();
 
         // מאגר מילים
-        words = new ArrayList<>(Arrays.asList(
+        if (loadWords()!=null)
+        words = new ArrayList<>(loadWords());
+        else words = new ArrayList<>(Arrays.asList(
                 "מחשב", "תפוח"
         ));
         yesWords=new ArrayList<>();
@@ -60,6 +65,14 @@ public class GameActivity extends AppCompatActivity {
         scoreCount = findViewById(R.id.scoreCount);
         lettersContainer = findViewById(R.id.lettersContainer);
         hangmanView = findViewById(R.id.hangmanView);
+        btn_Add=findViewById(R.id.btn_Add);
+
+
+        btn_Add.setOnClickListener(v -> {
+           Intent i=new Intent(this,addWordsActivity.class);
+           startActivity(i);
+           finish();
+        });
 
         // כפתורים
         initButtons();
@@ -111,7 +124,7 @@ public class GameActivity extends AppCompatActivity {
 
             boolean updated = false;
             for (int i = 0; i < selectedWord.length(); i++) {
-                if (String.valueOf(selectedWord.charAt(i)).equals(letter)) {
+                if (String.valueOf (selectedWord.charAt(i)).equals(letter)) {
                     textViews[i].setText(letter);
                     score++;
                     updated = true;
@@ -241,6 +254,35 @@ public class GameActivity extends AppCompatActivity {
         noWords.add(selectedWord);
         startNextWord();
     }
+    private void saveWords(List<String> words) {
+        SharedPreferences prefs = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
+        SharedPreferences.Editor editor = prefs.edit();
+
+        JSONArray array = new JSONArray();
+        for (String s : words) {
+            array.put(s);
+        }
+        editor.putString(KEY_WORDS, array.toString());
+        editor.apply();
+    }
+
+    private List<String> loadWords() {
+        SharedPreferences prefs = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
+        String json = prefs.getString(KEY_WORDS, null);
+
+        List<String> list = new ArrayList<>();
+        if (json != null) {
+            try {
+                JSONArray array = new JSONArray(json);
+                for (int i = 0; i < array.length(); i++) {
+                    list.add(array.getString(i));
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return list;
+    }
 
     private void hideSystemUI() {
         View decorView = getWindow().getDecorView();
@@ -250,4 +292,5 @@ public class GameActivity extends AppCompatActivity {
                         | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
         );
     }
+
 }

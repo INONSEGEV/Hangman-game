@@ -1,0 +1,38 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="24dp"
+    android:height="24dp"
+    android:viewportWidth="24"
+    android:viewportHeight="24">
+
+    <!-- Document background -->
+    <path
+        android:fillColor="#6366F1"
+        android:pathData="M14,2L6,2C4.9,2 4,2.9 4,4L4,20C4,21.1 4.89,22 5.99,22L18,22C19.1,22 20,21.1 20,20L20,8L14,2Z" />
+
+    <!-- Document fold -->
+    <path
+        android:fillColor="#E5E7EB"
+        android:pathData="M14,2L14,8L20,8L14,2Z" />
+
+    <!-- Edit pen -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M15.5,12L16.5,13L10,19.5L9,19L15.5,12Z" />
+
+    <!-- Pen tip -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M16.5,13L17.5,12L18.5,13L17.5,14L16.5,13Z" />
+
+    <!-- Document lines -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M7,10L13,10L13,11L7,11L7,10Z" />
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M7,13L11,13L11,14L7,14L7,13Z" />
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M7,16L9,16L9,17L7,17L7,16Z" />
+
+</vector>

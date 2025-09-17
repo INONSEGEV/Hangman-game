@@ -13,7 +13,7 @@
         android:theme="@style/Theme.HangmanGame">
         <activity
             android:name=".addWordsActivity"
-            android:exported="false" />
+            android:exported="true" />
 
         <provider
             android:name="androidx.core.content.FileProvider"
