@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -37,7 +38,7 @@ public class addWordsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_add_words);
-
+        hideSystemUI();
         recyclerView = findViewById(R.id.rv_words_list);
         editWord = findViewById(R.id.et_word_input);
         btnAdd = findViewById(R.id.btn_confirm);
@@ -62,6 +63,13 @@ public class addWordsActivity extends AppCompatActivity {
         }
 
         btnAdd.setOnClickListener(v -> {
+            // סגור את המקלדת אם היא פתוחה
+            InputMethodManager imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
+            View view = getCurrentFocus();
+            if (view == null) view = new View(this); // במקרה שאין פוקוס
+            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+
+            // קוד קיים להוספת מילה
             String newWord = editWord.getText().toString().trim();
             if (!newWord.isEmpty()) {
                 words.add(newWord);
@@ -108,5 +116,13 @@ public class addWordsActivity extends AppCompatActivity {
             }
         }
         return list;
+    }
+    private void hideSystemUI() {
+        View decorView = getWindow().getDecorView();
+        decorView.setSystemUiVisibility(
+                View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+                        | View.SYSTEM_UI_FLAG_FULLSCREEN
+                        | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
+        );
     }
 }

@@ -61,7 +61,7 @@ public class GameActivity extends AppCompatActivity {
         {
             Toast.makeText(this,"",Toast.LENGTH_SHORT);
            Intent i=new Intent(this,addWordsActivity.class);
-           i.putExtra("add","חייב להוסיף מילים לפני תחילת המשחק");
+           i.putExtra("add", " תוסיף מילים לפני התחלת המשחק");
            startActivity(i);
            finish();
 
@@ -253,7 +253,7 @@ public class GameActivity extends AppCompatActivity {
             Toast.makeText(this, "נחשפת המילה: " + selectedWord, Toast.LENGTH_SHORT).show();
             scoreAll++;
             yesWords.add(selectedWord);
-            startNextWord();
+            new android.os.Handler().postDelayed(() -> startNextWord(), 700); // 700ms דיליי
         }
     }
 
@@ -261,7 +261,7 @@ public class GameActivity extends AppCompatActivity {
         Toast.makeText(this, "המילה הייתה: " + selectedWord, Toast.LENGTH_SHORT).show();
         wrongCountAll++;
         noWords.add(selectedWord);
-        startNextWord();
+        new android.os.Handler().postDelayed(() -> startNextWord(), 1500); // 700ms דיליי
     }
     private void saveWords(List<String> words) {
         SharedPreferences prefs = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);

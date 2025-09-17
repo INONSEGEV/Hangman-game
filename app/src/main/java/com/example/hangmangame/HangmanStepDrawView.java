@@ -86,67 +86,68 @@ public class HangmanStepDrawView extends View {
         steps.add(step4);
 
         // גוף
-        // גוף
         Path step5 = new Path();
         float headBottom = baseY - poleHeight + height * 0.11f + headRadius;
-// הזזנו את הגוף 10% מהגובה למטה
         float bodyOffset = height * 0.05f;
         step5.moveTo(baseX + beamLength * 0.75f, headBottom + bodyOffset);
         step5.lineTo(baseX + beamLength * 0.75f, headBottom + bodyOffset + height * 0.15f);
         steps.add(step5);
 
-// יד שמאל
+        // יד שמאל
         Path step6 = new Path();
         step6.moveTo(baseX + beamLength * 0.75f, headBottom + bodyOffset + height * 0.03f);
         step6.lineTo(baseX + beamLength * 0.65f, headBottom + bodyOffset + height * 0.08f);
         steps.add(step6);
 
-// יד ימין
+        // יד ימין
         Path step7 = new Path();
         step7.moveTo(baseX + beamLength * 0.75f, headBottom + bodyOffset + height * 0.03f);
         step7.lineTo(baseX + beamLength * 0.85f, headBottom + bodyOffset + height * 0.08f);
         steps.add(step7);
 
-// רגל שמאל
+        // רגל שמאל
         Path step8 = new Path();
         step8.moveTo(baseX + beamLength * 0.75f, headBottom + bodyOffset + height * 0.15f);
         step8.lineTo(baseX + beamLength * 0.68f, headBottom + bodyOffset + height * 0.23f);
         steps.add(step8);
 
-// רגל ימין
+        // רגל ימין
         Path step9 = new Path();
         step9.moveTo(baseX + beamLength * 0.75f, headBottom + bodyOffset + height * 0.15f);
         step9.lineTo(baseX + beamLength * 0.82f, headBottom + bodyOffset + height * 0.23f);
         steps.add(step9);
 
-
         // שלב 10 - פנים "מת" (XX בעיניים ולשון בחוץ)
         Path step10 = new Path();
-        float headCenterX = baseX + beamLength * 0.75f; // מרכז הראש
+        float headCenterX = baseX + beamLength * 0.75f;
         float headCenterY = baseY - poleHeight + height * 0.15f;
-        float eyeOffsetX = headRadius * 0.4f; // רוחב מהמרכז לעין (קטן יותר)
-        float eyeOffsetY = headRadius * 0.3f; // גובה מהמרכז לעין (קטן יותר)
-        float eyeSize = headRadius * 0.2f;    // חצי רוחב ה-X (קטן יותר)
+        float eyeOffsetX = headRadius * 0.4f;
+        float eyeOffsetY = headRadius * 0.3f;
+        float eyeSize = headRadius * 0.2f;
 
-// עין שמאל XX
+        // עין שמאל XX
         step10.moveTo(headCenterX - eyeOffsetX - eyeSize, headCenterY - eyeOffsetY - eyeSize);
         step10.lineTo(headCenterX - eyeOffsetX + eyeSize, headCenterY - eyeOffsetY + eyeSize);
         step10.moveTo(headCenterX - eyeOffsetX - eyeSize, headCenterY - eyeOffsetY + eyeSize);
         step10.lineTo(headCenterX - eyeOffsetX + eyeSize, headCenterY - eyeOffsetY - eyeSize);
 
-// עין ימין XX
+        // עין ימין XX
         step10.moveTo(headCenterX + eyeOffsetX - eyeSize, headCenterY - eyeOffsetY - eyeSize);
         step10.lineTo(headCenterX + eyeOffsetX + eyeSize, headCenterY - eyeOffsetY + eyeSize);
         step10.moveTo(headCenterX + eyeOffsetX - eyeSize, headCenterY - eyeOffsetY + eyeSize);
         step10.lineTo(headCenterX + eyeOffsetX + eyeSize, headCenterY - eyeOffsetY - eyeSize);
 
-// לשון "מת" - קשת מטה, לא מחייכת
+        // לשון "מת"
         step10.moveTo(headCenterX - headRadius * 0.3f, headCenterY + headRadius * 0.6f);
         step10.quadTo(headCenterX, headCenterY + headRadius * 0.8f, headCenterX + headRadius * 0.3f, headCenterY + headRadius * 0.6f);
-
         steps.add(step10);
 
-
+        // --- תוספת חשובה ---
+        // כדי לוודא שכל שלב נמדד לפני הציור
+        for (Path p : steps) {
+            PathMeasure pm = new PathMeasure(p, false);
+            pm.getLength();
+        }
     }
 
     @Override
@@ -158,7 +159,7 @@ public class HangmanStepDrawView extends View {
             drawPath.addPath(steps.get(i));
         }
 
-        if (currentStep < steps.size()) {
+        if (currentStep < steps.size() && steps.size() > 0) {
             Path current = steps.get(currentStep);
             pathMeasure = new PathMeasure(current, false);
             pathLength = pathMeasure.getLength();
@@ -173,7 +174,7 @@ public class HangmanStepDrawView extends View {
     public void drawNextStep() {
         if (currentStep >= steps.size()) return;
 
-        ValueAnimator animator = ValueAnimator.ofFloat(0f,1f);
+        ValueAnimator animator = ValueAnimator.ofFloat(0f, 1f);
         animator.setDuration(500); // חצי שניה לכל שלב
         animator.addUpdateListener(animation -> {
             animatedValue = (float) animation.getAnimatedValue();
@@ -188,13 +189,13 @@ public class HangmanStepDrawView extends View {
             }
         });
     }
+
     public void reset() {
         currentStep = 0;
         animatedValue = 0f;
         drawPath.reset();
         invalidate(); // גורם ל-onDraw להתעדכן ולהציג ציור ריק
     }
-
 
     public int getMaxSteps() {
         return steps.size();

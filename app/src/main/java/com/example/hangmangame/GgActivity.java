@@ -43,14 +43,13 @@ public class GgActivity extends AppCompatActivity {
         shareButton = findViewById(R.id.shareButton);
 
         Intent intent = getIntent();
-        ArrayList<String> trueWords = intent.getStringArrayListExtra("noWords");
+        ArrayList<String> trueWords = intent.getStringArrayListExtra("yesWords");
         if (trueWords != null) {
             trueCorrectWord.setText(String.join(", ", trueWords)); // מציג מופרד בפסיקים
         }
-
-        ArrayList<String> falseWords = intent.getStringArrayListExtra("yesWords");
+        ArrayList<String> falseWords = intent.getStringArrayListExtra("noWords");
         if (falseWords != null) {
-            trueCorrectWord.setText(String.join(", ", falseWords)); // מציג מופרד בפסיקים
+            falseCorrectWord.setText(String.join(", ", falseWords)); // מציג מופרד בפסיקים
         }
 
         attemptsCount.setText(String.valueOf(intent.getIntExtra("ScoreCount",0)));
