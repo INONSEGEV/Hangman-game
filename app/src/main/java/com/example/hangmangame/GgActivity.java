@@ -43,7 +43,7 @@ public class GgActivity extends AppCompatActivity {
         shareButton = findViewById(R.id.shareButton);
 
         Intent intent = getIntent();
-        ArrayList<String> trueWords = intent.getStringArrayListExtra("yesWords");
+        ArrayList<String> trueWords = intent.getStringArrayListExtra("noWords");
         if (trueWords != null) {
             trueCorrectWord.setText(String.join(", ", trueWords)); // מציג מופרד בפסיקים
         }

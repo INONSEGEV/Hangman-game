@@ -20,39 +20,37 @@ public class addWordsAdapter extends RecyclerView.Adapter<addWordsAdapter.wordIt
 
     private List<String> dataList;
 
-
     public addWordsAdapter(List<String> dataList) {
         this.dataList = dataList;
     }
+
     @Override
     public void onBindViewHolder(wordItem holder, int position) {
         String word = dataList.get(position);
         holder.textView.setText(word);
 
         holder.btnDelete.setOnClickListener(v -> {
-            // מסיר מה-Adapter
+            // מסיר מהרשימה
             dataList.remove(position);
             notifyItemRemoved(position);
             notifyItemRangeChanged(position, dataList.size());
 
-            // מסיר מה-SharedPreferences
+            // שמירה מחודשת ל־SharedPreferences
             saveWordsToPrefs(holder.itemView.getContext(), dataList);
         });
-
     }
+
     private void saveWordsToPrefs(Context context, List<String> words) {
-        SharedPreferences prefs = context.getSharedPreferences("YOUR_PREFS_NAME", MODE_PRIVATE);
+        SharedPreferences prefs = context.getSharedPreferences(addWordsActivity.PREFS_NAME, MODE_PRIVATE);
         SharedPreferences.Editor editor = prefs.edit();
 
         JSONArray array = new JSONArray();
         for (String s : words) {
             array.put(s);
         }
-        editor.putString("KEY_WORDS", array.toString());
+        editor.putString(addWordsActivity.KEY_WORDS, array.toString());
         editor.apply();
     }
-
-
 
     @Override
     public wordItem onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -65,15 +63,12 @@ public class addWordsAdapter extends RecyclerView.Adapter<addWordsAdapter.wordIt
         TextView textView;
         ImageButton btnDelete;
 
-
         public wordItem(View itemView) {
             super(itemView);
             textView = itemView.findViewById(R.id.tv_subtitle);
             btnDelete = itemView.findViewById(R.id.btnDelete);
         }
-
     }
-
 
     @Override
     public int getItemCount() {

@@ -3,11 +3,11 @@ package com.example.hangmangame;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -21,11 +21,12 @@ import java.util.List;
 
 public class addWordsActivity extends AppCompatActivity {
 
-    private static final String PREFS_NAME = "hangman_prefs";
-    private static final String KEY_WORDS = "words_list";
+    public static final String PREFS_NAME = "hangman_prefs";
+    public static final String KEY_WORDS = "words_list";
 
     RecyclerView recyclerView;
     EditText editWord;
+    TextView tv_main_title;
     Button btnAdd;
     ImageButton btn_save;
     addWordsAdapter adapter;
@@ -40,38 +41,43 @@ public class addWordsActivity extends AppCompatActivity {
         recyclerView = findViewById(R.id.rv_words_list);
         editWord = findViewById(R.id.et_word_input);
         btnAdd = findViewById(R.id.btn_confirm);
-        btn_save=findViewById(R.id.btn_save);
+        btn_save = findViewById(R.id.btn_save);
+        tv_main_title = findViewById(R.id.tv_main_title);
         words = loadWords();
 
         adapter = new addWordsAdapter(words);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(adapter);
-        // אם יש מילים שמורות – להציג אותן מייד
+
         if (words.isEmpty()) {
             recyclerView.setVisibility(View.GONE);
         } else {
             recyclerView.setVisibility(View.VISIBLE);
             adapter.notifyDataSetChanged();
         }
+        Intent intent = getIntent();
+        String add = intent.getStringExtra("add");
+        if (add != null) {
+            tv_main_title.setText(add);
+        }
 
         btnAdd.setOnClickListener(v -> {
             String newWord = editWord.getText().toString().trim();
             if (!newWord.isEmpty()) {
                 words.add(newWord);
-                saveWords(words); // שמירה מיידית ב־SharedPreferences
+                saveWords(words); // שמירה מיידית
                 adapter.notifyItemInserted(words.size() - 1);
 
                 editWord.setText("");
-
                 recyclerView.setVisibility(View.VISIBLE);
                 recyclerView.scrollToPosition(words.size() - 1);
             }
         });
+
         btn_save.setOnClickListener(v -> {
-            Intent i=new Intent(this, GameActivity.class);
+            Intent i = new Intent(this, GameActivity.class);
             startActivity(i);
             finish();
-
         });
     }
 
@@ -90,7 +96,6 @@ public class addWordsActivity extends AppCompatActivity {
     private List<String> loadWords() {
         SharedPreferences prefs = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
         String json = prefs.getString(KEY_WORDS, null);
-        Log.d("DEBUG",json);
         List<String> list = new ArrayList<>();
         if (json != null) {
             try {
