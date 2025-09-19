@@ -12,8 +12,8 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import androidx.appcompat.widget.Toolbar;
-
 import androidx.activity.EdgeToEdge;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -31,7 +31,6 @@ public class addWordsActivity extends AppCompatActivity {
     RecyclerView recyclerView;
     EditText editWord;
     Toolbar toolbar;
-
     TextView tv_main_title;
     Button btnAdd;
     ImageButton btn_save;
@@ -44,6 +43,7 @@ public class addWordsActivity extends AppCompatActivity {
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_add_words);
         hideSystemUI();
+
         recyclerView = findViewById(R.id.rv_words_list);
         editWord = findViewById(R.id.et_word_input);
         btnAdd = findViewById(R.id.btn_confirm);
@@ -58,12 +58,8 @@ public class addWordsActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(adapter);
 
-        if (words.isEmpty()) {
-            recyclerView.setVisibility(View.GONE);
-        } else {
-            recyclerView.setVisibility(View.VISIBLE);
-            adapter.notifyDataSetChanged();
-        }
+        updateRecyclerVisibility();
+
         Intent intent = getIntent();
         String add = intent.getStringExtra("add");
         if (add != null) {
@@ -74,19 +70,20 @@ public class addWordsActivity extends AppCompatActivity {
             // סגור את המקלדת אם היא פתוחה
             InputMethodManager imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
             View view = getCurrentFocus();
-            if (view == null) view = new View(this); // במקרה שאין פוקוס
+            if (view == null) view = new View(this);
             imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
 
-            // קוד קיים להוספת מילה
             String newWord = editWord.getText().toString().trim();
             if (!newWord.isEmpty()) {
                 words.add(newWord);
-                saveWords(words); // שמירה מיידית
+                saveWords(words);
                 adapter.notifyItemInserted(words.size() - 1);
 
                 editWord.setText("");
-                recyclerView.setVisibility(View.VISIBLE);
+                updateRecyclerVisibility();
                 recyclerView.scrollToPosition(words.size() - 1);
+
+                invalidateOptionsMenu(); // עדכון MenuItem למחיקה
             }
         });
 
@@ -95,6 +92,10 @@ public class addWordsActivity extends AppCompatActivity {
             startActivity(i);
             finish();
         });
+    }
+
+    private void updateRecyclerVisibility() {
+        recyclerView.setVisibility(words.isEmpty() ? View.GONE : View.VISIBLE);
     }
 
     private void saveWords(List<String> words) {
@@ -125,6 +126,7 @@ public class addWordsActivity extends AppCompatActivity {
         }
         return list;
     }
+
     private void hideSystemUI() {
         View decorView = getWindow().getDecorView();
         decorView.setSystemUiVisibility(
@@ -133,36 +135,44 @@ public class addWordsActivity extends AppCompatActivity {
                         | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
         );
     }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_add_words, menu);
         return true;
     }
+
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        MenuItem deleteAllItem = menu.findItem(R.id.btn_Add);
+        if (deleteAllItem != null) {
+            deleteAllItem.setVisible(!words.isEmpty());
+        }
+        return super.onPrepareOptionsMenu(menu);
+    }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
 
         if (id == R.id.btn_Add) {
-            // יצירת AlertDialog לאישור מחיקה
-            new androidx.appcompat.app.AlertDialog.Builder(this)
+            // AlertDialog לאישור מחיקה
+            new AlertDialog.Builder(this)
                     .setTitle("אישור מחיקה")
                     .setMessage("אתה בטוח שברצונך למחוק את כל המילים?")
                     .setPositiveButton("כן", (dialog, which) -> {
-                        // מחיקת כל המילים
                         words.clear();
                         adapter.notifyDataSetChanged();
                         saveWords(words);
-                        recyclerView.setVisibility(View.GONE);
+                        updateRecyclerVisibility();
+                        invalidateOptionsMenu(); // עדכון MenuItem
                     })
-                    .setNegativeButton("לא", null) // סגירה ללא פעולה
+                    .setNegativeButton("לא", null)
                     .show();
 
             return true;
         }
 
-
         return super.onOptionsItemSelected(item);
     }
-
-
 }

@@ -7,4 +7,9 @@
         android:title="מחיקת כל המילים"
         android:orderInCategory="100"
     />
+    <item
+        android:id="@+id/b"
+        android:title="בדיקה"
+        android:orderInCategory="100"
+    />
 </menu>
