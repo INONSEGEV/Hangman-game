@@ -3,12 +3,15 @@ package com.example.hangmangame;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import androidx.appcompat.widget.Toolbar;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -27,6 +30,8 @@ public class addWordsActivity extends AppCompatActivity {
 
     RecyclerView recyclerView;
     EditText editWord;
+    Toolbar toolbar;
+
     TextView tv_main_title;
     Button btnAdd;
     ImageButton btn_save;
@@ -44,6 +49,9 @@ public class addWordsActivity extends AppCompatActivity {
         btnAdd = findViewById(R.id.btn_confirm);
         btn_save = findViewById(R.id.btn_save);
         tv_main_title = findViewById(R.id.tv_main_title);
+        toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
         words = loadWords();
 
         adapter = new addWordsAdapter(words);
@@ -125,4 +133,36 @@ public class addWordsActivity extends AppCompatActivity {
                         | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
         );
     }
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_add_words, menu);
+        return true;
+    }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+
+        if (id == R.id.btn_Add) {
+            // יצירת AlertDialog לאישור מחיקה
+            new androidx.appcompat.app.AlertDialog.Builder(this)
+                    .setTitle("אישור מחיקה")
+                    .setMessage("אתה בטוח שברצונך למחוק את כל המילים?")
+                    .setPositiveButton("כן", (dialog, which) -> {
+                        // מחיקת כל המילים
+                        words.clear();
+                        adapter.notifyDataSetChanged();
+                        saveWords(words);
+                        recyclerView.setVisibility(View.GONE);
+                    })
+                    .setNegativeButton("לא", null) // סגירה ללא פעולה
+                    .show();
+
+            return true;
+        }
+
+
+        return super.onOptionsItemSelected(item);
+    }
+
+
 }
