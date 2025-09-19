@@ -7,6 +7,7 @@ import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -44,11 +45,11 @@ public class GgActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         ArrayList<String> trueWords = intent.getStringArrayListExtra("yesWords");
-        if (trueWords != null) {
+        if (!trueWords.isEmpty()) {
             trueCorrectWord.setText(String.join(", ", trueWords)); // מציג מופרד בפסיקים
         }
         ArrayList<String> falseWords = intent.getStringArrayListExtra("noWords");
-        if (falseWords != null) {
+        if (!falseWords.isEmpty()) {
             falseCorrectWord.setText(String.join(", ", falseWords)); // מציג מופרד בפסיקים
         }
 

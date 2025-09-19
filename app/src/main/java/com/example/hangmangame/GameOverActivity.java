@@ -35,11 +35,11 @@ public class GameOverActivity extends AppCompatActivity {
         attemptsCount=findViewById(R.id.attemptsCount);
         Intent intent = getIntent();
         ArrayList<String> trueWords = intent.getStringArrayListExtra("yesWords");
-        if (trueWords != null) {
+        if (!trueWords.isEmpty()) {
             trueCorrectWord.setText(String.join(", ", trueWords)); // מציג מופרד בפסיקים
         }
         ArrayList<String> falseWords = intent.getStringArrayListExtra("noWords");
-        if (falseWords != null) {
+        if (!falseWords.isEmpty()) {
             falseCorrectWord.setText(String.join(", ", falseWords)); // מציג מופרד בפסיקים
         }
         attemptsCount.setText(String.valueOf(intent.getIntExtra("wrongCount",0)));
