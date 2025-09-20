@@ -54,7 +54,7 @@ public class addWordsActivity extends AppCompatActivity {
 
         words = loadWords();
 
-        adapter = new addWordsAdapter(words);
+        adapter = new addWordsAdapter(this,words);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(adapter);
 

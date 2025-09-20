@@ -7,10 +7,12 @@ import android.content.SharedPreferences;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.google.android.material.bottomsheet.BottomSheetDialog;
 
 import org.json.JSONArray;
 
@@ -19,8 +21,10 @@ import java.util.List;
 public class addWordsAdapter extends RecyclerView.Adapter<addWordsAdapter.wordItem> {
 
     private List<String> dataList;
+    private Context contextRef;
 
-    public addWordsAdapter(List<String> dataList) {
+    public addWordsAdapter(Context context, List<String> dataList) {
+        this.contextRef = context;
         this.dataList = dataList;
     }
 
@@ -29,15 +33,58 @@ public class addWordsAdapter extends RecyclerView.Adapter<addWordsAdapter.wordIt
         String word = dataList.get(position);
         holder.textView.setText(word);
 
-        holder.btnDelete.setOnClickListener(v -> {
-            // מסיר מהרשימה
-            dataList.remove(position);
-            notifyItemRemoved(position);
-            notifyItemRangeChanged(position, dataList.size());
-
-            // שמירה מחודשת ל־SharedPreferences
-            saveWordsToPrefs(holder.itemView.getContext(), dataList);
+        // לחיצה ארוכה → תפתח BottomSheetMenu
+        holder.itemView.setOnLongClickListener(v -> {
+            showBottomSheetMenu(holder, position);
+            return true;
         });
+    }
+
+    private void showBottomSheetMenu(wordItem holder, int position) {
+        View sheetView = LayoutInflater.from(contextRef)
+                .inflate(R.layout.bottom_sheet_menu, null);
+
+        BottomSheetDialog dialog = new BottomSheetDialog(contextRef);
+        dialog.setContentView(sheetView);
+
+        // כפתור עריכה
+        sheetView.findViewById(R.id.btnEdit).setOnClickListener(v -> {
+            showEditDialog(position);
+            dialog.dismiss();
+        });
+
+        // כפתור מחיקה
+        sheetView.findViewById(R.id.btnDelete).setOnClickListener(v -> {
+            removeWord(position);
+            dialog.dismiss();
+        });
+
+        dialog.show();
+    }
+
+    private void showEditDialog(int position) {
+        View dialogView = LayoutInflater.from(contextRef)
+                .inflate(R.layout.dialog_edit_word, null);
+
+        EditText input = dialogView.findViewById(R.id.editWordInput);
+        input.setText(dataList.get(position));
+
+        androidx.appcompat.app.AlertDialog dialog =
+                new androidx.appcompat.app.AlertDialog.Builder(contextRef)
+                        .setView(dialogView)
+                        .create();
+
+        dialogView.findViewById(R.id.btnSave).setOnClickListener(v -> {
+            String newWord = input.getText().toString().trim();
+            if (!newWord.isEmpty()) {
+                editWord(position, newWord);
+                dialog.dismiss();
+            }
+        });
+
+        dialogView.findViewById(R.id.btnCancel).setOnClickListener(v -> dialog.dismiss());
+
+        dialog.show();
     }
 
     private void saveWordsToPrefs(Context context, List<String> words) {
@@ -60,14 +107,26 @@ public class addWordsAdapter extends RecyclerView.Adapter<addWordsAdapter.wordIt
     }
 
     public static class wordItem extends RecyclerView.ViewHolder {
+
         TextView textView;
-        ImageButton btnDelete;
 
         public wordItem(View itemView) {
             super(itemView);
             textView = itemView.findViewById(R.id.tv_subtitle);
-            btnDelete = itemView.findViewById(R.id.btnDelete);
         }
+    }
+
+    public void removeWord(int position) {
+        dataList.remove(position);
+        notifyItemRemoved(position);
+        notifyItemRangeChanged(position, dataList.size());
+        saveWordsToPrefs(contextRef, dataList);
+    }
+
+    public void editWord(int position, String newWord) {
+        dataList.set(position, newWord);
+        notifyItemChanged(position);
+        saveWordsToPrefs(contextRef, dataList);
     }
 
     @Override

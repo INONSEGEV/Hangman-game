@@ -21,47 +21,21 @@
         android:layout_height="wrap_content"
         android:padding="12dp">
 
-        <!-- כפתור מחיקה -->
-        <ImageButton
-            android:id="@+id/btnDelete"
-            android:layout_width="56dp"
-            android:layout_height="56dp"
-            android:background="@drawable/ic_delete"
-            android:scaleType="centerCrop"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent" />
-
-        <!-- כותרת ראשית -->
-        <TextView
-            android:id="@+id/tv_title"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="12dp"
-            android:text="כותרת הפריט"
-            android:textSize="16sp"
-            android:textStyle="bold"
-            android:maxLines="1"
-            android:ellipsize="end"
-            android:textColor="#000000"
-            app:layout_constraintStart_toEndOf="@id/btnDelete"
-            app:layout_constraintTop_toTopOf="@id/btnDelete" />
-
-        <!-- תת־כותרת / תיאור קצר -->
+        <!-- תיאור / כותרת עיקרית -->
         <TextView
             android:id="@+id/tv_subtitle"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="12dp"
-            android:layout_marginTop="4dp"
+            android:layout_marginEnd="8dp"
             android:text="תיאור קצר שיכול להיות שורה או שתיים בהתאם לצורך"
-            android:textSize="14sp"
+            android:textSize="16sp"
             android:maxLines="2"
             android:ellipsize="end"
             android:textColor="#000000"
-            app:layout_constraintStart_toEndOf="@id/btnDelete"
-            app:layout_constraintTop_toBottomOf="@id/tv_title"
-            app:layout_constraintBottom_toBottomOf="@id/btnDelete" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/tv_time" />
 
         <!-- זמן / תוית בצד ימין למעלה -->
         <TextView
@@ -70,9 +44,8 @@
             android:layout_height="wrap_content"
             android:text="12:34"
             android:textSize="12sp"
-            android:layout_marginEnd="8dp"
             android:textColor="#000000"
-            app:layout_constraintTop_toTopOf="@id/tv_title"
+            app:layout_constraintTop_toTopOf="@id/tv_subtitle"
             app:layout_constraintEnd_toEndOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
