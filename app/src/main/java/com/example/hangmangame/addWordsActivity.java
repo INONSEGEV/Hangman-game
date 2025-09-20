@@ -11,12 +11,16 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import androidx.appcompat.widget.Toolbar;
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.google.android.material.button.MaterialButton;
 
 import org.json.JSONArray;
 
@@ -33,7 +37,7 @@ public class addWordsActivity extends AppCompatActivity {
     Toolbar toolbar;
     TextView tv_main_title;
     Button btnAdd;
-    ImageButton btn_save;
+    MaterialButton btn_save;
     addWordsAdapter adapter;
     List<String> words;
 
@@ -88,10 +92,16 @@ public class addWordsActivity extends AppCompatActivity {
         });
 
         btn_save.setOnClickListener(v -> {
-            Intent i = new Intent(this, GameActivity.class);
-            startActivity(i);
-            finish();
+            if (!words.isEmpty()) { // בודק אם יש פריטים ברשימה
+                Intent i = new Intent(this, GameActivity.class);
+                startActivity(i);
+                finish();
+            } else {
+                // אפשר להראות Toast או הודעה שהרשימה ריקה
+                Toast.makeText(this, "לא ניתן להתחיל משחק ללא מילים שמורות", Toast.LENGTH_SHORT).show();
+            }
         });
+
     }
 
     private void updateRecyclerVisibility() {
