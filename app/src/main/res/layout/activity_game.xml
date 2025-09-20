@@ -22,17 +22,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-<!--            <ImageView-->
-<!--                android:id="@+id/topImage"-->
-<!--                android:layout_width="match_parent"-->
-<!--                android:layout_height="0dp"-->
-<!--                android:adjustViewBounds="true"-->
-<!--                android:scaleType="fitCenter"-->
-<!--                android:src="@drawable/z"-->
-<!--                app:layout_constraintTop_toTopOf="parent"-->
-<!--                app:layout_constraintBottom_toTopOf="@id/gameInfoBar"-->
-<!--                app:layout_constraintStart_toStartOf="parent"-->
-<!--                app:layout_constraintEnd_toEndOf="parent"/>-->
+
             <com.example.hangmangame.HangmanStepDrawView
                 android:id="@+id/hangmanView"
                 android:layout_width="match_parent"
@@ -188,91 +178,91 @@
             android:padding="4dp">
 
             <!-- שורה 1 -->
-            <Button android:id="@+id/btn_ז" android:text="ז" style="@style/LetterButton"
-                android:layout_width="0dp" android:layout_columnWeight="1"
-                android:minWidth="0dp" android:minHeight="0dp" android:padding="4dp" android:textSize="20sp"/>
-            <Button android:id="@+id/btn_ו" android:text="ו" style="@style/LetterButton"
-                android:layout_width="0dp" android:layout_columnWeight="1"
-                android:minWidth="0dp" android:minHeight="0dp" android:padding="4dp" android:textSize="20sp"/>
-            <Button android:id="@+id/btn_ה" android:text="ה" style="@style/LetterButton"
-                android:layout_width="0dp" android:layout_columnWeight="1"
-                android:minWidth="0dp" android:minHeight="0dp" android:padding="4dp" android:textSize="20sp"/>
-            <Button android:id="@+id/btn_ד" android:text="ד" style="@style/LetterButton"
-                android:layout_width="0dp" android:layout_columnWeight="1"
-                android:minWidth="0dp" android:minHeight="0dp" android:padding="4dp" android:textSize="20sp"/>
-            <Button android:id="@+id/btn_ג" android:text="ג" style="@style/LetterButton"
-                android:layout_width="0dp" android:layout_columnWeight="1"
-                android:minWidth="0dp" android:minHeight="0dp" android:padding="4dp" android:textSize="20sp"/>
-            <Button android:id="@+id/btn_ב" android:text="ב" style="@style/LetterButton"
-                android:layout_width="0dp" android:layout_columnWeight="1"
-                android:minWidth="0dp" android:minHeight="0dp" android:padding="4dp" android:textSize="20sp"/>
-            <Button android:id="@+id/btn_א" android:text="א" style="@style/LetterButton"
-                android:layout_width="0dp" android:layout_columnWeight="1"
-                android:minWidth="0dp" android:minHeight="0dp" android:padding="4dp" android:textSize="20sp"/>
-
-            <!-- שורה 2 -->
-            <Button android:id="@+id/btn_נ" android:text="נ" style="@style/LetterButton"
-                android:layout_width="0dp" android:layout_columnWeight="1"
-                android:minWidth="0dp" android:minHeight="0dp" android:padding="4dp" android:textSize="20sp"/>
-            <Button android:id="@+id/btn_מ" android:text="מ" style="@style/LetterButton"
-                android:layout_width="0dp" android:layout_columnWeight="1"
-                android:minWidth="0dp" android:minHeight="0dp" android:padding="4dp" android:textSize="20sp"/>
-            <Button android:id="@+id/btn_ל" android:text="ל" style="@style/LetterButton"
-                android:layout_width="0dp" android:layout_columnWeight="1"
-                android:minWidth="0dp" android:minHeight="0dp" android:padding="4dp" android:textSize="20sp"/>
-            <Button android:id="@+id/btn_כ" android:text="כ" style="@style/LetterButton"
-                android:layout_width="0dp" android:layout_columnWeight="1"
-                android:minWidth="0dp" android:minHeight="0dp" android:padding="4dp" android:textSize="20sp"/>
-            <Button android:id="@+id/btn_י" android:text="י" style="@style/LetterButton"
-                android:layout_width="0dp" android:layout_columnWeight="1"
-                android:minWidth="0dp" android:minHeight="0dp" android:padding="4dp" android:textSize="20sp"/>
-            <Button android:id="@+id/btn_ט" android:text="ט" style="@style/LetterButton"
-                android:layout_width="0dp" android:layout_columnWeight="1"
-                android:minWidth="0dp" android:minHeight="0dp" android:padding="4dp" android:textSize="20sp"/>
-            <Button android:id="@+id/btn_ח" android:text="ח" style="@style/LetterButton"
-                android:layout_width="0dp" android:layout_columnWeight="1"
-                android:minWidth="0dp" android:minHeight="0dp" android:padding="4dp" android:textSize="20sp"/>
-
-            <!-- שורה 3 -->
-            <Button android:id="@+id/btn_ש" android:text="ש" style="@style/LetterButton"
-                android:layout_width="0dp" android:layout_columnWeight="1"
-                android:minWidth="0dp" android:minHeight="0dp" android:padding="4dp" android:textSize="20sp"/>
-            <Button android:id="@+id/btn_ר" android:text="ר" style="@style/LetterButton"
-                android:layout_width="0dp" android:layout_columnWeight="1"
-                android:minWidth="0dp" android:minHeight="0dp" android:padding="4dp" android:textSize="20sp"/>
-            <Button android:id="@+id/btn_ק" android:text="ק" style="@style/LetterButton"
-                android:layout_width="0dp" android:layout_columnWeight="1"
-                android:minWidth="0dp" android:minHeight="0dp" android:padding="4dp" android:textSize="20sp"/>
-            <Button android:id="@+id/btn_צ" android:text="צ" style="@style/LetterButton"
-                android:layout_width="0dp" android:layout_columnWeight="1"
-                android:minWidth="0dp" android:minHeight="0dp" android:padding="4dp" android:textSize="20sp"/>
             <Button android:id="@+id/btn_פ" android:text="פ" style="@style/LetterButton"
-                android:layout_width="0dp" android:layout_columnWeight="1"
-                android:minWidth="0dp" android:minHeight="0dp" android:padding="4dp" android:textSize="20sp"/>
-            <Button android:id="@+id/btn_ע" android:text="ע" style="@style/LetterButton"
-                android:layout_width="0dp" android:layout_columnWeight="1"
-                android:minWidth="0dp" android:minHeight="0dp" android:padding="4dp" android:textSize="20sp"/>
-            <Button android:id="@+id/btn_ס" android:text="ס" style="@style/LetterButton"
-                android:layout_width="0dp" android:layout_columnWeight="1"
-                android:minWidth="0dp" android:minHeight="0dp" android:padding="4dp" android:textSize="20sp"/>
-
-            <!-- שורה 4 -->
-            <Button android:id="@+id/btn_ץ" android:text="ץ" style="@style/LetterButton"
-                android:layout_width="0dp" android:layout_columnWeight="1"
-                android:minWidth="0dp" android:minHeight="0dp" android:padding="4dp" android:textSize="20sp"/>
-            <Button android:id="@+id/btn_ף" android:text="ף" style="@style/LetterButton"
-                android:layout_width="0dp" android:layout_columnWeight="1"
-                android:minWidth="0dp" android:minHeight="0dp" android:padding="4dp" android:textSize="20sp"/>
-            <Button android:id="@+id/btn_ן" android:text="ן" style="@style/LetterButton"
                 android:layout_width="0dp" android:layout_columnWeight="1"
                 android:minWidth="0dp" android:minHeight="0dp" android:padding="4dp" android:textSize="20sp"/>
             <Button android:id="@+id/btn_ם" android:text="ם" style="@style/LetterButton"
                 android:layout_width="0dp" android:layout_columnWeight="1"
                 android:minWidth="0dp" android:minHeight="0dp" android:padding="4dp" android:textSize="20sp"/>
+            <Button android:id="@+id/btn_ן" android:text="ן" style="@style/LetterButton"
+                android:layout_width="0dp" android:layout_columnWeight="1"
+                android:minWidth="0dp" android:minHeight="0dp" android:padding="4dp" android:textSize="20sp"/>
+            <Button android:id="@+id/btn_ו" android:text="ו" style="@style/LetterButton"
+                android:layout_width="0dp" android:layout_columnWeight="1"
+                android:minWidth="0dp" android:minHeight="0dp" android:padding="4dp" android:textSize="20sp"/>
+            <Button android:id="@+id/btn_ט" android:text="ט" style="@style/LetterButton"
+                android:layout_width="0dp" android:layout_columnWeight="1"
+                android:minWidth="0dp" android:minHeight="0dp" android:padding="4dp" android:textSize="20sp"/>
+            <Button android:id="@+id/btn_א" android:text="א" style="@style/LetterButton"
+                android:layout_width="0dp" android:layout_columnWeight="1"
+                android:minWidth="0dp" android:minHeight="0dp" android:padding="4dp" android:textSize="20sp"/>
+            <Button android:id="@+id/btn_ר" android:text="ר" style="@style/LetterButton"
+                android:layout_width="0dp" android:layout_columnWeight="1"
+                android:minWidth="0dp" android:minHeight="0dp" android:padding="4dp" android:textSize="20sp"/>
+
+            <!-- שורה 2 -->
+            <Button android:id="@+id/btn_ק" android:text="ק" style="@style/LetterButton"
+                android:layout_width="0dp" android:layout_columnWeight="1"
+                android:minWidth="0dp" android:minHeight="0dp" android:padding="4dp" android:textSize="20sp"/>
+            <Button android:id="@+id/btn_ף" android:text="ף" style="@style/LetterButton"
+                android:layout_width="0dp" android:layout_columnWeight="1"
+                android:minWidth="0dp" android:minHeight="0dp" android:padding="4dp" android:textSize="20sp"/>
             <Button android:id="@+id/btn_ך" android:text="ך" style="@style/LetterButton"
                 android:layout_width="0dp" android:layout_columnWeight="1"
                 android:minWidth="0dp" android:minHeight="0dp" android:padding="4dp" android:textSize="20sp"/>
+            <Button android:id="@+id/btn_ל" android:text="ל" style="@style/LetterButton"
+                android:layout_width="0dp" android:layout_columnWeight="1"
+                android:minWidth="0dp" android:minHeight="0dp" android:padding="4dp" android:textSize="20sp"/>
+            <Button android:id="@+id/btn_ח" android:text="ח" style="@style/LetterButton"
+                android:layout_width="0dp" android:layout_columnWeight="1"
+                android:minWidth="0dp" android:minHeight="0dp" android:padding="4dp" android:textSize="20sp"/>
+            <Button android:id="@+id/btn_י" android:text="י" style="@style/LetterButton"
+                android:layout_width="0dp" android:layout_columnWeight="1"
+                android:minWidth="0dp" android:minHeight="0dp" android:padding="4dp" android:textSize="20sp"/>
+            <Button android:id="@+id/btn_ע" android:text="ע" style="@style/LetterButton"
+                android:layout_width="0dp" android:layout_columnWeight="1"
+                android:minWidth="0dp" android:minHeight="0dp" android:padding="4dp" android:textSize="20sp"/>
+
+            <!-- שורה 3 -->
+            <Button android:id="@+id/btn_ז" android:text="ז" style="@style/LetterButton"
+                android:layout_width="0dp" android:layout_columnWeight="1"
+                android:minWidth="0dp" android:minHeight="0dp" android:padding="4dp" android:textSize="20sp"/>
+            <Button android:id="@+id/btn_כ" android:text="כ" style="@style/LetterButton"
+                android:layout_width="0dp" android:layout_columnWeight="1"
+                android:minWidth="0dp" android:minHeight="0dp" android:padding="4dp" android:textSize="20sp"/>
+            <Button android:id="@+id/btn_ג" android:text="ג" style="@style/LetterButton"
+                android:layout_width="0dp" android:layout_columnWeight="1"
+                android:minWidth="0dp" android:minHeight="0dp" android:padding="4dp" android:textSize="20sp"/>
+            <Button android:id="@+id/btn_ד" android:text="ד" style="@style/LetterButton"
+                android:layout_width="0dp" android:layout_columnWeight="1"
+                android:minWidth="0dp" android:minHeight="0dp" android:padding="4dp" android:textSize="20sp"/>
+            <Button android:id="@+id/btn_ש" android:text="ש" style="@style/LetterButton"
+                android:layout_width="0dp" android:layout_columnWeight="1"
+                android:minWidth="0dp" android:minHeight="0dp" android:padding="4dp" android:textSize="20sp"/>
+            <Button android:id="@+id/btn_ץ" android:text="ץ" style="@style/LetterButton"
+                android:layout_width="0dp" android:layout_columnWeight="1"
+                android:minWidth="0dp" android:minHeight="0dp" android:padding="4dp" android:textSize="20sp"/>
             <Button android:id="@+id/btn_ת" android:text="ת" style="@style/LetterButton"
+                android:layout_width="0dp" android:layout_columnWeight="1"
+                android:minWidth="0dp" android:minHeight="0dp" android:padding="4dp" android:textSize="20sp"/>
+
+            <!-- שורה 4 -->
+            <Button android:id="@+id/btn_צ" android:text="צ" style="@style/LetterButton"
+                android:layout_width="0dp" android:layout_columnWeight="1"
+                android:minWidth="0dp" android:minHeight="0dp" android:padding="4dp" android:textSize="20sp"/>
+            <Button android:id="@+id/btn_מ" android:text="מ" style="@style/LetterButton"
+                android:layout_width="0dp" android:layout_columnWeight="1"
+                android:minWidth="0dp" android:minHeight="0dp" android:padding="4dp" android:textSize="20sp"/>
+            <Button android:id="@+id/btn_נ" android:text="נ" style="@style/LetterButton"
+                android:layout_width="0dp" android:layout_columnWeight="1"
+                android:minWidth="0dp" android:minHeight="0dp" android:padding="4dp" android:textSize="20sp"/>
+            <Button android:id="@+id/btn_ה" android:text="ה" style="@style/LetterButton"
+                android:layout_width="0dp" android:layout_columnWeight="1"
+                android:minWidth="0dp" android:minHeight="0dp" android:padding="4dp" android:textSize="20sp"/>
+            <Button android:id="@+id/btn_ב" android:text="ב" style="@style/LetterButton"
+                android:layout_width="0dp" android:layout_columnWeight="1"
+                android:minWidth="0dp" android:minHeight="0dp" android:padding="4dp" android:textSize="20sp"/>
+            <Button android:id="@+id/btn_ס" android:text="ס" style="@style/LetterButton"
                 android:layout_width="0dp" android:layout_columnWeight="1"
                 android:minWidth="0dp" android:minHeight="0dp" android:padding="4dp" android:textSize="20sp"/>
 
