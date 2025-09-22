@@ -89,6 +89,8 @@ public class addWordsActivity extends AppCompatActivity {
                 btnDeleteSelected.setVisibility(View.GONE);
             }
         });
+        btnDeleteSelected.setVisibility(adapter.getSelectedCount() > 0 ? View.VISIBLE : View.GONE);
+
 
 // סגור את הכפתור אם אין נבחרים בהתחלה
         btnDeleteSelected.setVisibility(View.GONE);

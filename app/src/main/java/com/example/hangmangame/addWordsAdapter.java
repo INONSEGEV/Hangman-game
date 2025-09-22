@@ -232,4 +232,8 @@ public class addWordsAdapter extends RecyclerView.Adapter<addWordsAdapter.wordIt
             selectionListener.onSelectionChanged(0);
         }
     }
+    public int getSelectedCount() {
+        return selectedWords.size();
+    }
+
 }
