@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -104,16 +105,34 @@ public class addWordsAdapter extends RecyclerView.Adapter<addWordsAdapter.wordIt
 
         dialogView.findViewById(R.id.btnSave).setOnClickListener(v -> {
             String newWord = input.getText().toString().trim();
-            if (!newWord.isEmpty()) {
-                editWord(position, newWord);
-                dialog.dismiss();
+
+            // בדיקה שהמילה לא ריקה
+            if (newWord.isEmpty()) {
+                Toast.makeText(contextRef, "אנא הכנס מילה", Toast.LENGTH_SHORT).show();
+                return;
             }
+
+            // בדיקה שמכילה רק אותיות עבריות
+            if (!newWord.matches("[א-ת]+")) {
+                Toast.makeText(contextRef, "המילה חייבת להכיל רק אותיות בעברית", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            // בדיקה אם המילה כבר קיימת (חוץ מהמילה הנוכחית)
+            if (dataList.contains(newWord) && !newWord.equals(dataList.get(position))) {
+                Toast.makeText(contextRef, "המילה כבר קיימת ברשימה", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            editWord(position, newWord);
+            dialog.dismiss();
         });
 
         dialogView.findViewById(R.id.btnCancel).setOnClickListener(v -> dialog.dismiss());
 
         dialog.show();
     }
+
 
     private void saveWordsToPrefs(Context context, List<String> words) {
         SharedPreferences prefs = context.getSharedPreferences(addWordsActivity.PREFS_NAME, MODE_PRIVATE);

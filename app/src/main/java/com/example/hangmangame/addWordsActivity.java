@@ -92,23 +92,33 @@ public class addWordsActivity extends AppCompatActivity {
 
             String newWord = editWord.getText().toString().trim();
 
-            if (!newWord.isEmpty()) {
-                if (words.contains(newWord)) {
-                    // אם המילה כבר קיימת, לא מוסיפים
-                    Toast.makeText(this, "המילה כבר קיימת ברשימה", Toast.LENGTH_SHORT).show();
-                    return;
-                }
-
-                words.add(newWord);
-                saveWords(words);
-                adapter.notifyItemInserted(words.size() - 1);
-
-                editWord.setText("");
-                updateRecyclerVisibility();
-                recyclerView.scrollToPosition(words.size() - 1);
-                invalidateOptionsMenu(); // עדכון כפתורים
+            if (newWord.isEmpty()) {
+                Toast.makeText(this, "אנא הכנס מילה", Toast.LENGTH_SHORT).show();
+                return;
             }
+
+            // בדיקה רק אותיות עבריות
+            if (!newWord.matches("[א-ת]+")) {
+                Toast.makeText(this, "המילה חייבת להכיל רק אותיות בעברית", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            // בדיקה אם כבר קיימת
+            if (words.contains(newWord)) {
+                Toast.makeText(this, "המילה כבר קיימת ברשימה", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            words.add(newWord);
+            saveWords(words);
+            adapter.notifyItemInserted(words.size() - 1);
+
+            editWord.setText("");
+            updateRecyclerVisibility();
+            recyclerView.scrollToPosition(words.size() - 1);
+            invalidateOptionsMenu(); // עדכון כפתורים
         });
+
 
 
         btnDeleteSelected.setOnClickListener(v -> {
