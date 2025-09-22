@@ -3,6 +3,7 @@ package com.example.hangmangame;
 import android.content.Intent;
 import android.media.AudioManager;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Button;
 
 import androidx.activity.EdgeToEdge;
@@ -22,7 +23,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_main);
-
+        hideSystemUI();
         setVolumeControlStream(AudioManager.STREAM_MUSIC);
 
         StartGame = findViewById(R.id.StartGame);
@@ -35,5 +36,14 @@ public class MainActivity extends AppCompatActivity {
 
 
 
+    }
+
+    private void hideSystemUI() {
+        View decorView = getWindow().getDecorView();
+        decorView.setSystemUiVisibility(
+                View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+                        | View.SYSTEM_UI_FLAG_FULLSCREEN
+                        | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
+        );
     }
 }

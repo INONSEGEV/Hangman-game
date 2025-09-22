@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
@@ -26,6 +27,7 @@ public class GameOverActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_game_over);
+        hideSystemUI();
         setVolumeControlStream(AudioManager.STREAM_MUSIC);
         mediaPlayer = MediaPlayer.create(this, R.raw.go);
         mediaPlayer.start();
@@ -54,11 +56,12 @@ public class GameOverActivity extends AppCompatActivity {
 
     }
 
-
-        // יוצרים Runnable שיבצע מעבר לאחר 2 שניות
-//        new android.os.Handler().postDelayed(() -> {
-//            Intent intent = new Intent(this, MainActivity.class);
-//            startActivity(intent);
-//            finish(); // סוגר את הדף הנוכחי
-//        }, 2000); // 2000 מילישניות = 2 שניות
+    private void hideSystemUI() {
+        View decorView = getWindow().getDecorView();
+        decorView.setSystemUiVisibility(
+                View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+                        | View.SYSTEM_UI_FLAG_FULLSCREEN
+                        | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
+        );
+    }
 }
