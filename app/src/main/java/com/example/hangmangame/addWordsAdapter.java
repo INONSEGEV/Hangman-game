@@ -14,6 +14,7 @@ import android.widget.TextView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.bottomsheet.BottomSheetDialog;
+import com.google.android.material.datepicker.OnSelectionChangedListener;
 
 import org.json.JSONArray;
 
@@ -26,8 +27,15 @@ public class addWordsAdapter extends RecyclerView.Adapter<addWordsAdapter.wordIt
 
     private List<String> dataList;
     private Context contextRef;
-    private Set<String> selectedWords = new HashSet<>(); // שומר את הערכים המסומנים
+    private OnSelectionChangedListener selectionListener;
 
+    private Set<String> selectedWords = new HashSet<>(); // שומר את הערכים המסומנים
+    public interface OnSelectionChangedListener {
+        void onSelectionChanged(int selectedCount);
+    }
+    public void setOnSelectionChangedListener(OnSelectionChangedListener listener) {
+        this.selectionListener = listener;
+    }
     public addWordsAdapter(Context context, List<String> dataList) {
         this.contextRef = context;
         this.dataList = dataList;
@@ -38,7 +46,7 @@ public class addWordsAdapter extends RecyclerView.Adapter<addWordsAdapter.wordIt
         String word = dataList.get(position);
         holder.textView.setText(word);
 
-        holder.checkBox.setOnCheckedChangeListener(null); // מנקה מאזינים ישנים
+        holder.checkBox.setOnCheckedChangeListener(null);
         holder.checkBox.setChecked(selectedWords.contains(word));
 
         holder.checkBox.setOnCheckedChangeListener((buttonView, isChecked) -> {
@@ -47,9 +55,13 @@ public class addWordsAdapter extends RecyclerView.Adapter<addWordsAdapter.wordIt
             } else {
                 selectedWords.remove(word);
             }
+
+            // עדכון הכפתור בהתאם לכמות הנבחרים
+            if (selectionListener != null) {
+                selectionListener.onSelectionChanged(selectedWords.size());
+            }
         });
 
-        // לחיצה ארוכה → תפתח BottomSheetMenu
         holder.itemView.setOnLongClickListener(v -> {
             showBottomSheetMenu(holder, position);
             return true;
@@ -137,14 +149,22 @@ public class addWordsAdapter extends RecyclerView.Adapter<addWordsAdapter.wordIt
         if (position >= 0 && position < dataList.size()) {
             String word = dataList.get(position);
             dataList.remove(position);
-            selectedWords.remove(word); // גם מהסט של הנבחרים
+            selectedWords.remove(word); // להסיר מהסט של נבחרים
+
             notifyItemRemoved(position);
             saveWordsToPrefs(contextRef, dataList);
+
+            // עדכון הכפתור דרך ה־callback
+            if (selectionListener != null) {
+                selectionListener.onSelectionChanged(selectedWords.size());
+            }
+
             if (dataList.isEmpty()) {
-                notifyDataSetChanged(); // מוודא שאין אינדקסים מיותרים
+                notifyDataSetChanged();
             }
         }
     }
+
 
     public void editWord(int position, String newWord) {
         if (position >= 0 && position < dataList.size()) {
@@ -178,5 +198,9 @@ public class addWordsAdapter extends RecyclerView.Adapter<addWordsAdapter.wordIt
         selectedWords.clear();
         saveWordsToPrefs(contextRef, dataList);
         notifyDataSetChanged();
+
+        if (selectionListener != null) {
+            selectionListener.onSelectionChanged(0);
+        }
     }
 }

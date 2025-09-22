@@ -60,9 +60,21 @@ public class addWordsActivity extends AppCompatActivity {
 
         words = loadWords();
 
-        adapter = new addWordsAdapter(this,words);
+        adapter = new addWordsAdapter(this, words);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(adapter);
+
+// מאזינים לשינויים בבחירת CheckBox
+        adapter.setOnSelectionChangedListener(selectedCount -> {
+            if (selectedCount > 0) {
+                btnDeleteSelected.setVisibility(View.VISIBLE);
+            } else {
+                btnDeleteSelected.setVisibility(View.GONE);
+            }
+        });
+
+// סגור את הכפתור אם אין נבחרים בהתחלה
+        btnDeleteSelected.setVisibility(View.GONE);
 
         updateRecyclerVisibility();
 
@@ -73,14 +85,20 @@ public class addWordsActivity extends AppCompatActivity {
         }
 
         btnAdd.setOnClickListener(v -> {
-            // סגור את המקלדת אם היא פתוחה
             InputMethodManager imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
             View view = getCurrentFocus();
             if (view == null) view = new View(this);
             imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
 
             String newWord = editWord.getText().toString().trim();
+
             if (!newWord.isEmpty()) {
+                if (words.contains(newWord)) {
+                    // אם המילה כבר קיימת, לא מוסיפים
+                    Toast.makeText(this, "המילה כבר קיימת ברשימה", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
                 words.add(newWord);
                 saveWords(words);
                 adapter.notifyItemInserted(words.size() - 1);
@@ -88,10 +106,10 @@ public class addWordsActivity extends AppCompatActivity {
                 editWord.setText("");
                 updateRecyclerVisibility();
                 recyclerView.scrollToPosition(words.size() - 1);
-
-                invalidateOptionsMenu(); // עדכון MenuItem למחיקה
+                invalidateOptionsMenu(); // עדכון כפתורים
             }
         });
+
 
         btnDeleteSelected.setOnClickListener(v -> {
             adapter.removeSelected();
