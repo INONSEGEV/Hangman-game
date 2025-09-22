@@ -7,6 +7,7 @@ import android.content.SharedPreferences;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -16,12 +17,16 @@ import com.google.android.material.bottomsheet.BottomSheetDialog;
 
 import org.json.JSONArray;
 
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
 public class addWordsAdapter extends RecyclerView.Adapter<addWordsAdapter.wordItem> {
 
     private List<String> dataList;
     private Context contextRef;
+    private Set<String> selectedWords = new HashSet<>(); // שומר את הערכים המסומנים
 
     public addWordsAdapter(Context context, List<String> dataList) {
         this.contextRef = context;
@@ -32,6 +37,17 @@ public class addWordsAdapter extends RecyclerView.Adapter<addWordsAdapter.wordIt
     public void onBindViewHolder(wordItem holder, int position) {
         String word = dataList.get(position);
         holder.textView.setText(word);
+
+        holder.checkBox.setOnCheckedChangeListener(null); // מנקה מאזינים ישנים
+        holder.checkBox.setChecked(selectedWords.contains(word));
+
+        holder.checkBox.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            if (isChecked) {
+                selectedWords.add(word);
+            } else {
+                selectedWords.remove(word);
+            }
+        });
 
         // לחיצה ארוכה → תפתח BottomSheetMenu
         holder.itemView.setOnLongClickListener(v -> {
@@ -107,30 +123,60 @@ public class addWordsAdapter extends RecyclerView.Adapter<addWordsAdapter.wordIt
     }
 
     public static class wordItem extends RecyclerView.ViewHolder {
-
         TextView textView;
+        CheckBox checkBox;
 
         public wordItem(View itemView) {
             super(itemView);
             textView = itemView.findViewById(R.id.tv_subtitle);
+            checkBox = itemView.findViewById(R.id.checkBox);
         }
     }
 
     public void removeWord(int position) {
-        dataList.remove(position);
-        notifyItemRemoved(position);
-        notifyItemRangeChanged(position, dataList.size());
-        saveWordsToPrefs(contextRef, dataList);
+        if (position >= 0 && position < dataList.size()) {
+            String word = dataList.get(position);
+            dataList.remove(position);
+            selectedWords.remove(word); // גם מהסט של הנבחרים
+            notifyItemRemoved(position);
+            saveWordsToPrefs(contextRef, dataList);
+            if (dataList.isEmpty()) {
+                notifyDataSetChanged(); // מוודא שאין אינדקסים מיותרים
+            }
+        }
     }
 
     public void editWord(int position, String newWord) {
-        dataList.set(position, newWord);
-        notifyItemChanged(position);
-        saveWordsToPrefs(contextRef, dataList);
+        if (position >= 0 && position < dataList.size()) {
+            String oldWord = dataList.get(position);
+            dataList.set(position, newWord);
+            if (selectedWords.contains(oldWord)) {
+                selectedWords.remove(oldWord);
+                selectedWords.add(newWord);
+            }
+            notifyItemChanged(position);
+            saveWordsToPrefs(contextRef, dataList);
+        }
     }
 
     @Override
     public int getItemCount() {
         return dataList.size();
+    }
+
+    public void removeSelected() {
+        if (selectedWords.isEmpty()) return;
+
+        Iterator<String> iterator = dataList.iterator();
+        while (iterator.hasNext()) {
+            String word = iterator.next();
+            if (selectedWords.contains(word)) {
+                iterator.remove();
+            }
+        }
+
+        selectedWords.clear();
+        saveWordsToPrefs(contextRef, dataList);
+        notifyDataSetChanged();
     }
 }

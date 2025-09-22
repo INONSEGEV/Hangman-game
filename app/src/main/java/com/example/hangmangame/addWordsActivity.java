@@ -37,6 +37,7 @@ public class addWordsActivity extends AppCompatActivity {
     Toolbar toolbar;
     TextView tv_main_title;
     Button btnAdd;
+    ImageButton btnDeleteSelected;
     MaterialButton btn_save;
     addWordsAdapter adapter;
     List<String> words;
@@ -51,6 +52,7 @@ public class addWordsActivity extends AppCompatActivity {
         recyclerView = findViewById(R.id.rv_words_list);
         editWord = findViewById(R.id.et_word_input);
         btnAdd = findViewById(R.id.btn_confirm);
+        btnDeleteSelected = findViewById(R.id.btn_image);
         btn_save = findViewById(R.id.btn_save);
         tv_main_title = findViewById(R.id.tv_main_title);
         toolbar = findViewById(R.id.toolbar);
@@ -90,6 +92,11 @@ public class addWordsActivity extends AppCompatActivity {
                 invalidateOptionsMenu(); // עדכון MenuItem למחיקה
             }
         });
+
+        btnDeleteSelected.setOnClickListener(v -> {
+            adapter.removeSelected();
+        });
+
 
         btn_save.setOnClickListener(v -> {
             if (!words.isEmpty()) { // בודק אם יש פריטים ברשימה
