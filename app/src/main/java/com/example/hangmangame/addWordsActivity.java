@@ -3,6 +3,7 @@ package com.example.hangmangame;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.text.InputFilter;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -64,6 +65,22 @@ public class addWordsActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(adapter);
 
+// InputFilter שמאפשר רק אותיות עבריות
+        InputFilter hebrewFilter = (source, start, end, dest, dstart, dend) -> {
+            StringBuilder filtered = new StringBuilder();
+            for (int i = start; i < end; i++) {
+                char c = source.charAt(i);
+                if (c >= 'א' && c <= 'ת') {
+                    filtered.append(c); // רק תווים חוקיים נשארים
+                }
+            }
+            return filtered.toString();
+        };
+
+        editWord.setFilters(new InputFilter[]{hebrewFilter});
+
+
+
 // מאזינים לשינויים בבחירת CheckBox
         adapter.setOnSelectionChangedListener(selectedCount -> {
             if (selectedCount > 0) {
@@ -97,13 +114,6 @@ public class addWordsActivity extends AppCompatActivity {
                 return;
             }
 
-            // בדיקה רק אותיות עבריות
-            if (!newWord.matches("[א-ת]+")) {
-                Toast.makeText(this, "המילה חייבת להכיל רק אותיות בעברית", Toast.LENGTH_SHORT).show();
-                return;
-            }
-
-            // בדיקה אם כבר קיימת
             if (words.contains(newWord)) {
                 Toast.makeText(this, "המילה כבר קיימת ברשימה", Toast.LENGTH_SHORT).show();
                 return;
@@ -116,8 +126,13 @@ public class addWordsActivity extends AppCompatActivity {
             editWord.setText("");
             updateRecyclerVisibility();
             recyclerView.scrollToPosition(words.size() - 1);
-            invalidateOptionsMenu(); // עדכון כפתורים
+
+            adapter.setOnSelectionChangedListener(selectedCount -> {
+                btnDeleteSelected.setVisibility(selectedCount > 0 ? View.VISIBLE : View.GONE);
+            });
         });
+
+
 
 
 

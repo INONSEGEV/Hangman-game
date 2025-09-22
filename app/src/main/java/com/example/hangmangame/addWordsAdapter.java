@@ -4,6 +4,7 @@ import static android.content.Context.MODE_PRIVATE;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.text.InputFilter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -98,6 +99,21 @@ public class addWordsAdapter extends RecyclerView.Adapter<addWordsAdapter.wordIt
         EditText input = dialogView.findViewById(R.id.editWordInput);
         input.setText(dataList.get(position));
 
+        // InputFilter שמאפשר רק אותיות עבריות
+        input.setFilters(new InputFilter[] {
+                (source, start, end, dest, dstart, dend) -> {
+                    StringBuilder filtered = new StringBuilder();
+                    for (int i = start; i < end; i++) {
+                        char c = source.charAt(i);
+                        if (c >= 'א' && c <= 'ת') {
+                            filtered.append(c); // רק אותיות עבריות נשארות
+                        }
+                    }
+                    return filtered.toString(); // מחזיר רק את התווים החוקיים
+                }
+        });
+
+
         androidx.appcompat.app.AlertDialog dialog =
                 new androidx.appcompat.app.AlertDialog.Builder(contextRef)
                         .setView(dialogView)
@@ -106,15 +122,8 @@ public class addWordsAdapter extends RecyclerView.Adapter<addWordsAdapter.wordIt
         dialogView.findViewById(R.id.btnSave).setOnClickListener(v -> {
             String newWord = input.getText().toString().trim();
 
-            // בדיקה שהמילה לא ריקה
             if (newWord.isEmpty()) {
                 Toast.makeText(contextRef, "אנא הכנס מילה", Toast.LENGTH_SHORT).show();
-                return;
-            }
-
-            // בדיקה שמכילה רק אותיות עבריות
-            if (!newWord.matches("[א-ת]+")) {
-                Toast.makeText(contextRef, "המילה חייבת להכיל רק אותיות בעברית", Toast.LENGTH_SHORT).show();
                 return;
             }
 
@@ -132,6 +141,7 @@ public class addWordsAdapter extends RecyclerView.Adapter<addWordsAdapter.wordIt
 
         dialog.show();
     }
+
 
 
     private void saveWordsToPrefs(Context context, List<String> words) {
