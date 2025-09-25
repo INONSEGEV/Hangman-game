@@ -3,11 +3,11 @@ plugins {
 }
 
 android {
-    namespace = "com.example.hangmangame"
+    namespace = "com.shiftis.hangmangame"
     compileSdk = 36
 
     defaultConfig {
-        applicationId = "com.example.hangmangame"
+        applicationId = "com.shiftis.hangmangame"
         minSdk = 24
         targetSdk = 36
         versionCode = 1

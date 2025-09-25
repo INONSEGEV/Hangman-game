@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools">
+    xmlns:tools="http://schemas.android.com/tools"
+    package="com.shiftis.hangmangame">
 
     <application
         android:allowBackup="true"
@@ -11,11 +12,10 @@
         android:roundIcon="@drawable/logoap"
         android:supportsRtl="true"
         android:theme="@style/Theme.HangmanGame">
+
         <activity
             android:name=".addWordsActivity"
-            android:exported="true"
-            />
-
+            android:exported="true" />
 
         <provider
             android:name="androidx.core.content.FileProvider"
@@ -41,10 +41,8 @@
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
     </application>
-
 </manifest>
