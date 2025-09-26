@@ -40,7 +40,7 @@ public class addWordsActivity extends AppCompatActivity {
     TextView tv_main_title;
     Button btnAdd;
     ImageButton btnDeleteSelected;
-    MaterialButton btn_save,btnSelectAll;
+    MaterialButton btn_save,btnSelectAll,btnAutoDraw;
     addWordsAdapter adapter;
     List<String> words;
 
@@ -57,15 +57,21 @@ public class addWordsActivity extends AppCompatActivity {
         btnDeleteSelected = findViewById(R.id.btn_image);
         btn_save = findViewById(R.id.btn_save);
         tv_main_title = findViewById(R.id.tv_main_title);
+        btnSelectAll = findViewById(R.id.btn_select_all);
+
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
         words = loadWords();
-        btnSelectAll = findViewById(R.id.btn_select_all);
+        updateSelectAllButton();
+
 
         adapter = new addWordsAdapter(this, words);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(adapter);
+        btnAutoDraw = findViewById(R.id.btn_auto_draw);
+
+        btnAutoDraw.setOnClickListener(v -> generateRandomWords());
 
         btnSelectAll.setOnClickListener(v -> {
             if (adapter.getItemCount() == 0) {
@@ -180,12 +186,10 @@ public class addWordsActivity extends AppCompatActivity {
 
 
         btnDeleteSelected.setOnClickListener(v -> {
-            if (adapter.getItemCount()==1)
-            {
-                btnSelectAll.setText("בחר הכל");
-                btnSelectAll.setVisibility(View.GONE);
-            }
             adapter.removeSelected();
+            adapter.clearSelection(); // איפוס מצב בחירה
+            updateRecyclerVisibility();
+            updateSelectAllButton();
         });
 
 
@@ -202,9 +206,24 @@ public class addWordsActivity extends AppCompatActivity {
         });
 
     }
+    private void updateSelectAllButton() {
+        if (words.isEmpty()) {
+            btnSelectAll.setVisibility(View.GONE);
+        } else {
+            btnSelectAll.setVisibility(View.VISIBLE);
+            btnSelectAll.setText("בחר הכל");
+        }
+    }
+
 
     private void updateRecyclerVisibility() {
-        recyclerView.setVisibility(words.isEmpty() ? View.GONE : View.VISIBLE);
+        if (words.isEmpty()) {
+            recyclerView.setVisibility(View.GONE);
+            btnSelectAll.setVisibility(View.GONE);// אם אין מילים — הכפתור נעלם
+        } else {
+            recyclerView.setVisibility(View.VISIBLE);
+            btnSelectAll.setVisibility(View.VISIBLE); // אם יש מילים — הכפתור מופיע
+        }
     }
 
     private void saveWords(List<String> words) {
@@ -259,6 +278,37 @@ public class addWordsActivity extends AppCompatActivity {
         }
         return super.onPrepareOptionsMenu(menu);
     }
+    private void generateRandomWords() {
+        // רשימה לדוגמה של מילים אוטומטיות
+        String[] randomWords = {"תפוח", "מחשב", "ספר", "כדור", "גיטרה", "דגל", "מים", "חג", "פרח", "שמיים"};
+
+        boolean added = false;
+
+        for (String word : randomWords) {
+            if (!words.contains(word)) { // למנוע כפילויות
+                words.add(word);
+                adapter.notifyItemInserted(words.size() - 1);
+                added = true;
+            }
+        }
+
+        if (added) {
+            saveWords(words); // שמירה ב־SharedPreferences
+            adapter.notifyDataSetChanged();
+            updateRecyclerVisibility();
+            updateSelectAllButton();
+            recyclerView.scrollToPosition(words.size() - 1);
+
+            // איפוס מצב הבחירה
+            adapter.clearSelection();
+
+            Toast.makeText(this, "רשימת מילים אוטומטית נוספה", Toast.LENGTH_SHORT).show();
+        } else {
+            Toast.makeText(this, "כל המילים כבר קיימות ברשימה", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+
 
 
 }

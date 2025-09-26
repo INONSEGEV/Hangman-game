@@ -86,6 +86,14 @@ public class addWordsAdapter extends RecyclerView.Adapter<addWordsAdapter.wordIt
             return true;
         });
     }
+    public void clearSelection() {
+        selectedWords.clear();
+        notifyDataSetChanged();
+        if (selectionListener != null) {
+            selectionListener.onSelectionChanged(0);
+        }
+    }
+
 
     private void showBottomSheetMenu(wordItem holder, int position) {
         View sheetView = LayoutInflater.from(contextRef)
