@@ -38,6 +38,23 @@ public class addWordsAdapter extends RecyclerView.Adapter<addWordsAdapter.wordIt
     public void setOnSelectionChangedListener(OnSelectionChangedListener listener) {
         this.selectionListener = listener;
     }
+
+    public void toggleSelectAll() {
+        if (selectedWords.size() == dataList.size()) {
+            // אם הכל כבר נבחר — בטל בחירה
+            selectedWords.clear();
+        } else {
+            // אחרת — בחר הכל
+            selectedWords.clear();
+            selectedWords.addAll(dataList);
+        }
+        notifyDataSetChanged();
+
+        if (selectionListener != null) {
+            selectionListener.onSelectionChanged(selectedWords.size());
+        }
+    }
+
     public addWordsAdapter(Context context, List<String> dataList) {
         this.contextRef = context;
         this.dataList = dataList;

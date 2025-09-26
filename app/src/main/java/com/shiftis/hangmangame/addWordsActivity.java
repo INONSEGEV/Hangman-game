@@ -32,6 +32,7 @@ public class addWordsActivity extends AppCompatActivity {
 
     public static final String PREFS_NAME = "hangman_prefs";
     public static final String KEY_WORDS = "words_list";
+    private boolean allSelected = false;
 
     RecyclerView recyclerView;
     EditText editWord;
@@ -39,7 +40,7 @@ public class addWordsActivity extends AppCompatActivity {
     TextView tv_main_title;
     Button btnAdd;
     ImageButton btnDeleteSelected;
-    MaterialButton btn_save;
+    MaterialButton btn_save,btnSelectAll;
     addWordsAdapter adapter;
     List<String> words;
 
@@ -60,10 +61,26 @@ public class addWordsActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         words = loadWords();
+        btnSelectAll = findViewById(R.id.btn_select_all);
 
         adapter = new addWordsAdapter(this, words);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(adapter);
+
+        btnSelectAll.setOnClickListener(v -> {
+            if (adapter.getItemCount() == 0) {
+                return; // אין מילים — אל תעשה כלום
+            }
+
+            adapter.toggleSelectAll();
+
+            if (adapter.getSelectedCount() == adapter.getItemCount()) {
+                btnSelectAll.setText("בטל בחירה");
+            } else {
+                btnSelectAll.setText("בחר הכל");
+            }
+        });
+
 
 // InputFilter שמאפשר רק אותיות עבריות
         InputFilter hebrewFilter = (source, start, end, dest, dstart, dend) -> {
@@ -87,8 +104,18 @@ public class addWordsActivity extends AppCompatActivity {
                 btnDeleteSelected.setVisibility(View.VISIBLE);
             } else {
                 btnDeleteSelected.setVisibility(View.GONE);
+                btnSelectAll.setText("בחר הכל");
+
+            }
+
+            if (selectedCount == adapter.getItemCount()) {
+                btnSelectAll.setText("בטל בחירה");
+            } else {
+                btnSelectAll.setText("בחר הכל");
             }
         });
+
+
         btnDeleteSelected.setVisibility(adapter.getSelectedCount() > 0 ? View.VISIBLE : View.GONE);
 
 
@@ -124,14 +151,28 @@ public class addWordsActivity extends AppCompatActivity {
             words.add(newWord);
             saveWords(words);
             adapter.notifyItemInserted(words.size() - 1);
-
+            btnSelectAll.setText("בחר הכל");
+            btnSelectAll.setVisibility(View.VISIBLE);
             editWord.setText("");
             updateRecyclerVisibility();
             recyclerView.scrollToPosition(words.size() - 1);
-
             adapter.setOnSelectionChangedListener(selectedCount -> {
                 btnDeleteSelected.setVisibility(selectedCount > 0 ? View.VISIBLE : View.GONE);
+                if (selectedCount == adapter.getItemCount()) {
+                    btnSelectAll.setText("בטל בחירה");
+                } else {
+                    btnSelectAll.setText("בחר הכל");
+                }
+                if (words.isEmpty()) { // אם הרשימה ריקה
+                    btnSelectAll.setText("בחר הכל");
+                    btnSelectAll.setVisibility(View.GONE);
+                }
+                else {
+                    btnSelectAll.setVisibility(View.VISIBLE);
+                }
             });
+
+
         });
 
 
@@ -139,8 +180,14 @@ public class addWordsActivity extends AppCompatActivity {
 
 
         btnDeleteSelected.setOnClickListener(v -> {
+            if (adapter.getItemCount()==1)
+            {
+                btnSelectAll.setText("בחר הכל");
+                btnSelectAll.setVisibility(View.GONE);
+            }
             adapter.removeSelected();
         });
+
 
 
         btn_save.setOnClickListener(v -> {
@@ -213,28 +260,5 @@ public class addWordsActivity extends AppCompatActivity {
         return super.onPrepareOptionsMenu(menu);
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
 
-        if (id == R.id.btn_Add) {
-            // AlertDialog לאישור מחיקה
-            new AlertDialog.Builder(this)
-                    .setTitle("אישור מחיקה")
-                    .setMessage("אתה בטוח שברצונך למחוק את כל המילים?")
-                    .setPositiveButton("כן", (dialog, which) -> {
-                        words.clear();
-                        adapter.notifyDataSetChanged();
-                        saveWords(words);
-                        updateRecyclerVisibility();
-                        invalidateOptionsMenu(); // עדכון MenuItem
-                    })
-                    .setNegativeButton("לא", null)
-                    .show();
-
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
 }

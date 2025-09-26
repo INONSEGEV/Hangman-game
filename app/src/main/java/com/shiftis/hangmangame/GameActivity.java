@@ -190,12 +190,18 @@ public class GameActivity extends AppCompatActivity {
             b.setVisibility(View.VISIBLE);
         }
 
-        // בוחרים מילה חדשה
-        Random random = new Random();
-        int a = random.nextInt(words.size());
-        selectedWord = words.get(a);
-        words.remove(a);
-        Log.d("DEBUG",selectedWord);
+        /// בוחרים מילה חדשה
+        if (words != null && !words.isEmpty()) {
+            Random random = new Random();
+            int a = random.nextInt(words.size());
+            selectedWord = words.get(a);
+            words.remove(a);
+            Log.d("DEBUG", selectedWord);
+        } else {
+            Log.e("DEBUG", "אין מילים לבחירה");
+            // טיפול במקרה שאין מילים, לדוגמה:
+            selectedWord = null;
+        }
 
         // נקה TextViews ישנים
         lettersContainer.removeAllViews();
