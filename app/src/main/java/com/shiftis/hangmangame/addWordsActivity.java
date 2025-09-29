@@ -16,7 +16,6 @@ import android.widget.Toast;
 
 import androidx.appcompat.widget.Toolbar;
 import androidx.activity.EdgeToEdge;
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -41,7 +40,7 @@ public class addWordsActivity extends AppCompatActivity {
     Button btnAdd;
     ImageButton btnDeleteSelected;
     MaterialButton btn_save,btnSelectAll,btnAutoDraw;
-    addWordsAdapter adapter;
+    addCarrierAdapter adapter;
     List<String> words;
 
     @Override
@@ -66,7 +65,7 @@ public class addWordsActivity extends AppCompatActivity {
         updateSelectAllButton();
 
 
-        adapter = new addWordsAdapter(this, words);
+        adapter = new addCarrierAdapter(this, words);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(adapter);
         btnAutoDraw = findViewById(R.id.btn_auto_draw);
@@ -181,10 +180,6 @@ public class addWordsActivity extends AppCompatActivity {
 
         });
 
-
-
-
-
         btnDeleteSelected.setOnClickListener(v -> {
             adapter.removeSelected();
             adapter.clearSelection(); // איפוס מצב בחירה
@@ -280,7 +275,7 @@ public class addWordsActivity extends AppCompatActivity {
     }
     private void generateRandomWords() {
         // רשימה לדוגמה של מילים אוטומטיות
-        String[] randomWords = {"תפוח", "מחשב", "ספר", "כדור", "גיטרה", "דגל", "מים", "חג", "פרח", "שמיים"};
+        String[] randomWords = {"תפוח", "מחשב", "ספר", "כדור", "גיטרה", "דגל", "מים", "חג", "פרח", "שמיים","יונתן","אגאי"};
 
         boolean added = false;
 
