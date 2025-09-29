@@ -85,6 +85,7 @@ public class addCarrierAdapter extends RecyclerView.Adapter<addCarrierAdapter.wo
             return true;
         });
 
+
     }
     public void clearSelection() {
         selectedWords.clear();
