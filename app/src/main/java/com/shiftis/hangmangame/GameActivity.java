@@ -52,20 +52,18 @@ public class GameActivity extends AppCompatActivity {
         hideSystemUI();
 
         // מאגר מילים
-        if (!loadWords().isEmpty())
-        {
-            words = new ArrayList<>(loadWords());
+        // מאגר מילים
+        words = new ArrayList<>(loadWords()); // תמיד מאתחלים
+
+        if (words.isEmpty()) {
+            Toast.makeText(this, "אין מילים במאגר, הוסף מילים לפני תחילת המשחק", Toast.LENGTH_LONG).show();
+            Intent i = new Intent(this, addWordsActivity.class);
+            i.putExtra("add", "תוסיף מילים לפני התחלת המשחק");
+            startActivity(i);
+            finish();
+            return; // חשוב לעצור כאן!
         }
 
-        else
-        {
-            Toast.makeText(this,"",Toast.LENGTH_SHORT);
-           Intent i=new Intent(this,addWordsActivity.class);
-           i.putExtra("add", " תוסיף מילים לפני התחלת המשחק");
-           startActivity(i);
-           finish();
-
-        }
         yesWords=new ArrayList<>();
         noWords=new ArrayList<>();
 

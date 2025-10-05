@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "445359639385",
+    "project_id": "hangmangame-152b4",
+    "storage_bucket": "hangmangame-152b4.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:445359639385:android:1f6ca3629114af0d5bda48",
+        "android_client_info": {
+          "package_name": "com.shiftis.hangmangame"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAPOrDuMIao-ONwH7hu4zyO1dKESeLbu_I"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

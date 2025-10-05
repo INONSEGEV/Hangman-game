@@ -31,8 +31,6 @@
     <color name="word_background">#F5F5F5</color>
 
     <!-- Basic colors -->
-    <color name="white">#FFFFFF</color>
-    <color name="black">#000000</color>
     <color name="transparent">#00000000</color>
 
     <!-- Gradient colors -->
@@ -54,4 +52,16 @@
     <color name="letter_slot_empty">#F5F5F5</color>
     <color name="letter_slot_filled">#E8F5E8</color>
     <color name="delete_button">#FF5722</color>
+    <color name="purple_200">#FFBB86FC</color>
+    <color name="blue">#03A9F4</color>
+    <color name="purple_700">#FF3700B3</color>
+    <color name="teal_200">#FF03DAC5</color>
+    <color name="teal_700">#FF018786</color>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+
+    <!-- צבעים נוספים לדף ההתחברות -->
+    <color name="background_color">#FFFAFAFA</color>
+    <color name="accent_color">#FF6200EE</color>
+    <color name="error_color">#FFB00020</color>
 </resources>

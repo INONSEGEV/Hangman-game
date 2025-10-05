@@ -13,7 +13,10 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
-
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.FirebaseFirestore;
+import java.util.HashMap;
+import java.util.Map;
 import androidx.appcompat.widget.Toolbar;
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -33,6 +36,7 @@ public class addWordsActivity extends AppCompatActivity {
     public static final String KEY_WORDS = "words_list";
     private boolean allSelected = false;
 
+
     RecyclerView recyclerView;
     EditText editWord;
     Toolbar toolbar;
@@ -49,7 +53,7 @@ public class addWordsActivity extends AppCompatActivity {
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_add_words);
         hideSystemUI();
-
+        listenForWordChanges();
         recyclerView = findViewById(R.id.rv_words_list);
         editWord = findViewById(R.id.et_word_input);
         btnAdd = findViewById(R.id.btn_confirm);
@@ -60,9 +64,9 @@ public class addWordsActivity extends AppCompatActivity {
 
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        updateSelectAllButton();
 
         words = loadWords();
-        updateSelectAllButton();
 
 
         adapter = new addCarrierAdapter(this, words);
@@ -155,6 +159,7 @@ public class addWordsActivity extends AppCompatActivity {
 
             words.add(newWord);
             saveWords(words);
+            saveWordsToFirestore(words); // שמירה ב־Firebase
             adapter.notifyItemInserted(words.size() - 1);
             btnSelectAll.setText("בחר הכל");
             btnSelectAll.setVisibility(View.VISIBLE);
@@ -273,6 +278,21 @@ public class addWordsActivity extends AppCompatActivity {
         }
         return super.onPrepareOptionsMenu(menu);
     }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == R.id.action_logout) {
+            com.google.firebase.auth.FirebaseAuth.getInstance().signOut();
+            clearWords();
+            Intent intent = new Intent(this, LoginActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(intent);
+            finish();
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
     private void generateRandomWords() {
         // רשימה לדוגמה של מילים אוטומטיות
         String[] randomWords = {"תפוח", "מחשב", "ספר", "כדור", "גיטרה", "דגל", "מים", "חג", "פרח", "שמיים","יונתן","אגאי"};
@@ -302,6 +322,59 @@ public class addWordsActivity extends AppCompatActivity {
             Toast.makeText(this, "כל המילים כבר קיימות ברשימה", Toast.LENGTH_SHORT).show();
         }
     }
+    private void saveWordsToFirestore(List<String> words) {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+        String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        Map<String, Object> data = new HashMap<>();
+        data.put("words", words);
+
+        db.collection("users").document(uid)
+                .set(data)
+                .addOnSuccessListener(aVoid -> {
+                    Toast.makeText(this, "רשימת מילים נשמרה ב־Firebase", Toast.LENGTH_SHORT).show();
+                    saveWords(words); // שומר ב־SharedPreferences את הרשימה המעודכנת
+                })
+                .addOnFailureListener(e -> {
+                    Toast.makeText(this, "שגיאה בשמירה ב־Firebase: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                });
+    }
+
+    private void listenForWordChanges() {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+
+        db.collection("users").document(uid)
+                .addSnapshotListener((snapshot, error) -> {
+                    if (error != null) {
+                        Toast.makeText(this, "שגיאה: " + error.getMessage(), Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+
+                    if (snapshot != null && snapshot.exists()) {
+                        List<String> firestoreWords = (List<String>) snapshot.get("words");
+                        if (firestoreWords != null) {
+                            words.clear();
+                            words.addAll(firestoreWords);
+
+                            // שמירה מקומית ב־SharedPreferences
+                            saveWords(words);
+
+                            adapter.notifyDataSetChanged();
+                            updateRecyclerVisibility();
+                            updateSelectAllButton();
+                        }
+                    }
+                });
+    }
+
+    private void clearWords() {
+        SharedPreferences prefs = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.remove(KEY_WORDS); // מוחק את המפתח והרשימה
+        editor.apply();
+    }
+
 
 
 

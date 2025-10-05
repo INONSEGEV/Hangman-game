@@ -1,3 +1,24 @@
 <resources>
+
+
+    <string name="app_logo">App Logo</string>
+
     <string name="app_name">Hangman game</string>
+    <string name="login_title">התחברות</string>
+    <string name="login_subtitle">היכנס לחשבון שלך</string>
+    <string name="email_hint">דואר אלקטרוני</string>
+    <string name="password_hint">סיסמה</string>
+    <string name="forgot_password">שכחת סיסמה?</string>
+    <string name="login_button">התחבר</string>
+    <string name="no_account">אין לך חשבון?</string>
+    <string name="signup_now">הירשם עכשיו</string>
+
+    <!-- Validation Messages -->
+    <string name="error_empty_email">נא להזין דואר אלקטרוני</string>
+    <string name="error_invalid_email">דואר אלקטרוני לא תקין</string>
+    <string name="error_empty_password">נא להזין סיסמה</string>
+    <string name="error_short_password">הסיסמה חייבת להכיל לפחות 6 תווים</string>
+    <string name="logging_in">מתחבר...</string>
+    <string name="login_success">התחברת בהצלחה!</string>
+    <string name="login_failed">ההתחברות נכשלה</string>
 </resources>
