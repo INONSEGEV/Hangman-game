@@ -17,8 +17,7 @@ import com.google.android.material.button.MaterialButton;
 
 public class MainActivity extends AppCompatActivity {
 
-
-    MaterialButton StartGame;
+    MaterialButton btnLogin, btnSignup, btnGoogle;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -27,13 +26,31 @@ public class MainActivity extends AppCompatActivity {
         hideSystemUI();
         setVolumeControlStream(AudioManager.STREAM_MUSIC);
 
-        StartGame = findViewById(R.id.StartGame);
+        btnLogin = findViewById(R.id.btnLogin);
+        btnSignup = findViewById(R.id.btnSignup);
+        btnGoogle = findViewById(R.id.btnGoogle);
 
-        StartGame.setOnClickListener(v -> {
-
-            Intent intent = new Intent(MainActivity.this, GameActivity.class);
-            startActivity(intent);
+        btnLogin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+                startActivity(intent);
+            }
         });
+
+        btnSignup.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, LogUp.class);
+                startActivity(intent);
+            }
+        });
+
+
+
+
+
+
 
 
 

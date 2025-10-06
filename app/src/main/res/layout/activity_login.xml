@@ -150,7 +150,10 @@
             android:text="הירשם עכשיו"
             android:textColor="@color/blue"
             android:textSize="14sp"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            android:clickable="true"
+            android:focusable="true" />
+
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

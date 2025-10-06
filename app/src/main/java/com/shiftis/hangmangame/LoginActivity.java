@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
@@ -24,19 +25,24 @@ public class LoginActivity extends AppCompatActivity {
     private MaterialButton btnLogin;
     private TextInputEditText etEmail,etPassword;
     private FirebaseAuth mAuth;
+    private TextView tvSignup;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_login);
+        hideSystemUI();
 
-
+        tvSignup = findViewById(R.id.tvSignup);
         btnLogin = findViewById(R.id.btnLogin);
         etEmail = findViewById(R.id.etEmail);
         etPassword = findViewById(R.id.etPassword);
         mAuth = FirebaseAuth.getInstance();
-
+        tvSignup.setOnClickListener(v -> {
+            Intent intent = new Intent(LoginActivity.this, LogUp.class);
+            startActivity(intent);
+        });
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -64,5 +70,13 @@ public class LoginActivity extends AppCompatActivity {
         });
 
 
+    }
+    private void hideSystemUI() {
+        View decorView = getWindow().getDecorView();
+        decorView.setSystemUiVisibility(
+                View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+                        | View.SYSTEM_UI_FLAG_FULLSCREEN
+                        | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
+        );
     }
 }

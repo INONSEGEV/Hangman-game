@@ -1,18 +1,11 @@
 package com.shiftis.hangmangame;
 
-import static android.content.Context.MODE_PRIVATE;
-
-import android.content.Context;
-import android.content.SharedPreferences;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CheckBox;
 import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
-
-import org.json.JSONArray;
 
 import java.util.List;
 
@@ -22,18 +15,6 @@ public class addWordsAdapter extends RecyclerView.Adapter<addWordsAdapter.wordIt
 
     public addWordsAdapter(List<String> dataList) {
         this.dataList = dataList;
-    }
-
-    private void saveWordsToPrefs(Context context, List<String> words) {
-        SharedPreferences prefs = context.getSharedPreferences(addWordsActivity.PREFS_NAME, MODE_PRIVATE);
-        SharedPreferences.Editor editor = prefs.edit();
-
-        JSONArray array = new JSONArray();
-        for (String s : words) {
-            array.put(s);
-        }
-        editor.putString(addWordsActivity.KEY_WORDS, array.toString());
-        editor.apply();
     }
 
     @Override
